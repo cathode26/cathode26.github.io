@@ -7,50 +7,136 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			$('.image-slider img').on('click', function() {
-				var index = $(this).index();
-				$('.content-container').html('<iframe src="page' + (index + 1) + '.html"></iframe>');
-			});
+		  var images = [
+			["image1a.png", "image1b.png"],
+			["image2a.png", "image2b.png"],
+			["image3a.png", "image3b.png"],
+			["image4a.png", "image4b.png"]
+		  ];
+		  var activeIndex = 0; // Change this line
 
-			$('.left-arrow').on('click', function() {
-				var activeIndex = $('.image-slider img.active').index();
-				if (activeIndex > 0) {
-					$('.image-slider img.active').removeClass('active').prev().addClass('active');
-				}
-			});
+		  $('.image-slider img:eq(0)').attr('src', images[0][1]);
+		  $('.image-slider img:eq(1)').attr('src', images[1][0]);
+		  $('.image-slider img:eq(2)').attr('src', images[2][0]);
+		  $('.image-slider img:eq(3)').attr('src', images[3][0]);
 
-			$('.right-arrow').on('click', function() {
-				var activeIndex = $('.image-slider img.active').index();
-				if (activeIndex < $('.image-slider img').length - 1) {
-					$('.image-slider img.active').removeClass('active').next().addClass('active');
-				}
-			});
+		  $('.image-slider img').on('mouseenter', function() {
+			var index = $(this).index();
+			if (index != activeIndex) {
+			  $(this).attr('src', images[index][1]);
+			}
+		  });
+
+		  $('.image-slider img').on('mouseleave', function() {
+			var index = $(this).index();
+			if (index != activeIndex) {
+			  $(this).attr('src', images[index][0]);
+			}
+		  });
+
+		  function switchPage(index) {
+			  if (index === -1) {
+				return;
+			  }
+			  var newPosition = (-1 * index * 100) + "vw"; // Change this line
+			  $(".ribbon").css("transform", "translateX(" + newPosition + ")");
+			  if (activeIndex !== -1) {
+				$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
+			  }
+			  $(".image-slider img:eq(" + index + ")").attr("src", images[index][1]);
+			  activeIndex = index;
+			}
+
+
+		  $('.image-slider img').on('click', function() {
+			var index = $(this).index();
+			if (index != activeIndex) {
+			  switchPage(index);
+			}
+		  });
+
+		  $('.left-arrow').on('click', function() {
+			if (activeIndex > 0) {
+			  switchPage(activeIndex - 1);
+			}
+		  });
+
+		  $('.right-arrow').on('click', function() {
+			if (activeIndex < images.length - 1) {
+			  switchPage(activeIndex + 1);
+			}
+		  });
+
+		  //switchPage(-1);
 		});
+
 	</script>
 </head>
 <body>
-	<div class="header">
-		<!-- Add your header content here -->
+  <div class="top-blank"> </div>
+  <div class="main">
+    <div class="arrow left-arrow">&larr;</div>
+    <div class="arrow right-arrow">&rarr;</div>
+
+    <div class="ribbon">
+	  <div>
+		<!-- Page 1 content -->
+		<div class="page-content">
+		  <h1>Page 1</h1>
+		  <img src="Me.png" alt="Page 1">
+		  <p>This is the content for Page 1.</p>
+		</div>
+	  </div>
+	  <div>
+		<!-- Page 2 content -->
+		<div class="page-content">
+		  <h1>Page 2</h1>
+		  <img src="Me2.png" alt="Page 2">
+		  <p>This is the content for Page 2.</p>
+		</div>
+	  </div>
+	  <div>
+		<!-- Page 3 content -->
+		<div class="page-content">
+		  <h1>Page 3 Title</h1>
+		  <div class="video-container">
+			<video src="page3-video.mp4" controls></video>
+		  </div>
+		  <div class="text-container">
+			<p>Page 3 content goes here.</p>
+		  </div>
+		</div>
+	  </div>
+	  <div>
+		<!-- Page 4 content -->
+		<div class="page-content">
+		  <h1>Page 4</h1>
+		  <div id="video-container">
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+		  </div>
+		  <div id="text-container">
+			<h2>Page 4 Description</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec rhoncus ligula, a gravida mi. Donec id ligula dui. Mauris eu ipsum in mauris finibus rutrum eget vel lectus. Suspendisse sit amet vestibulum elit, ac blandit ante.</p>
+		  </div>
+		</div>
+	  </div>
 	</div>
-	<div class="main">
-		<div class="left-arrow">
-			<img src="left-arrow.png">
-		</div>
-		<div class="right-arrow">
-			<img src="right-arrow.png">
-		</div>
+	<div class="bottom-image-slider">
+
 		<div class="image-slider">
-			<img src="image1.png">
-			<img src="image2.png">
-			<img src="image3.png">
-			<!-- Add all your image sources here -->
+		  <img src="image1b.png">
+		  <img src="image2a.png">
+		  <img src="image3a.png">
+		  <img src="image4a.png">
+		  <!-- Add all your image sources here -->
 		</div>
-		<div class="content-container">
-			<iframe src="page1.html"></iframe>
-		</div>
+		
 	</div>
-	<div class="footer">
-		<!-- Add your footer content here -->
-	</div>
+  </div>
+
+  <div class="footer">
+    <!-- Add your footer content here -->
+  </div>
 </body>
 </html>
+
