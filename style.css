@@ -1,0 +1,150 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, sans-serif;
+}
+
+.header {
+	background-color: #333;
+	color: #fff;
+	height: 50px;
+	padding: 10px;
+}
+
+.main {
+	margin: 0 auto;
+	max-width: 1000px;
+	padding: 20px;
+}
+
+.left-arrow,
+.right-arrow {
+	display: inline-block;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.left-arrow img,
+.right-arrow img {
+	height: 50px;
+}
+
+.image-slider {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 20px;
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
+}
+
+.image-slider img {
+	height: 100px;
+	margin-right: 10px;
+	border: 2px solid #ddd;
+	cursor: pointer;
+}
+
+.image-slider img.active {
+	border-color: #333;
+}
+
+.content-container {
+	margin-top: 20px;
+	height: 400px;
+	overflow-y: scroll;
+	border: 2px solid #ddd;
+}
+
+.footer {
+	background-color: #333;
+	color: #fff;
+	height: 50px;
+	padding: 10px;
+}
+/* Page 1 styles */
+.page1 .image-container {
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.page1 .image-container img {
+  max-width: 100%;
+  max-height: 100%;
+}
+.page1 .text-container {
+  height: 20%;
+  background-color: #ebebeb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.page1 .text-container h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+/* Page 2 styles */
+.page2 .text-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #ebebeb;
+}
+.page2 .text-container h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+/* Page 3 styles */
+.page3 .video-container {
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.page3 .video-container video {
+  max-width: 100%;
+  max-height: 100%;
+}
+.page3 .text-container {
+  height: 40%;
+  background-color: #ebebeb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.page3 .text-container h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+/* Page 4 styles */
+.page4 .video-container {
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.page4 .video-container iframe {
+  max-width: 100%;
+  max-height: 100%;
+}
+.page4 .text-container {
+  height: 40%;
+  background-color: #ebebeb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.page4 .text-container h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}

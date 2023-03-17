@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Main Page</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('.image-slider img').on('click', function() {
+				var index = $(this).index();
+				$('.content-container').html('<iframe src="page' + (index + 1) + '.html"></iframe>');
+			});
+
+			$('.left-arrow').on('click', function() {
+				var activeIndex = $('.image-slider img.active').index();
+				if (activeIndex > 0) {
+					$('.image-slider img.active').removeClass('active').prev().addClass('active');
+				}
+			});
+
+			$('.right-arrow').on('click', function() {
+				var activeIndex = $('.image-slider img.active').index();
+				if (activeIndex < $('.image-slider img').length - 1) {
+					$('.image-slider img.active').removeClass('active').next().addClass('active');
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+	<div class="header">
+		<!-- Add your header content here -->
+	</div>
+	<div class="main">
+		<div class="left-arrow">
+			<img src="left-arrow.png">
+		</div>
+		<div class="right-arrow">
+			<img src="right-arrow.png">
+		</div>
+		<div class="image-slider">
+			<img src="image1.png">
+			<img src="image2.png">
+			<img src="image3.png">
+			<!-- Add all your image sources here -->
+		</div>
+		<div class="content-container">
+			<iframe src="page1.html"></iframe>
+		</div>
+	</div>
+	<div class="footer">
+		<!-- Add your footer content here -->
+	</div>
+</body>
+</html>
