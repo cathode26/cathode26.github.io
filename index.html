@@ -41,9 +41,6 @@
 			  toggleTransition(true);
 			  var newPosition = (-1 * index * 100) + "vw";
 			  $(".ribbon").css("transform", "translateX(" + newPosition + ")");
-			  setTimeout(function() {
-				toggleTransition(false);
-			  }, 500); // The duration of the transition in milliseconds
 			  if (activeIndex !== -1) {
 				$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
 			  }
@@ -72,11 +69,17 @@
 			  }
 			});
 			
+			var transitionTimeoutId;
+			
 			function toggleTransition(enable) {
 			  if (enable) {
-				$(".ribbon").css("transition", "transform 0.5s ease-in-out");
+				$('.ribbon').css('transition', 'transform 0.5s ease-in-out');
+				clearTimeout(transitionTimeoutId); // Clear any previous timeout
+				transitionTimeoutId = setTimeout(function() {
+				  toggleTransition(false);
+				}, 500); // The duration of the transition in milliseconds
 			  } else {
-				$(".ribbon").css("transition", "none");
+				$('.ribbon').css('transition', 'none');
 			  }
 			}
 
