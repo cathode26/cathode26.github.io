@@ -38,14 +38,19 @@
 			  if (index === -1) {
 				return;
 			  }
-			  var newPosition = (-1 * index * 100) + "vw"; // Change this line
+			  toggleTransition(true);
+			  var newPosition = (-1 * index * 100) + "vw";
 			  $(".ribbon").css("transform", "translateX(" + newPosition + ")");
+			  setTimeout(function() {
+				toggleTransition(false);
+			  }, 500); // The duration of the transition in milliseconds
 			  if (activeIndex !== -1) {
 				$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
 			  }
 			  $(".image-slider img:eq(" + index + ")").attr("src", images[index][1]);
 			  activeIndex = index;
 			}
+
 
 
 		  $('.image-slider img').on('click', function() {
@@ -55,17 +60,26 @@
 			}
 		  });
 
-		  $('.left-arrow').on('click', function() {
-			if (activeIndex > 0) {
-			  switchPage(activeIndex - 1);
-			}
-		  });
+		  $('.left-arrow .arrow-overlay').on('click', function() {
+			  if (activeIndex > 0) {
+				switchPage(activeIndex - 1);
+			  }
+			});
 
-		  $('.right-arrow').on('click', function() {
-			if (activeIndex < images.length - 1) {
-			  switchPage(activeIndex + 1);
+			$('.right-arrow .arrow-overlay').on('click', function() {
+			  if (activeIndex < images.length - 1) {
+				switchPage(activeIndex + 1);
+			  }
+			});
+			
+			function toggleTransition(enable) {
+			  if (enable) {
+				$(".ribbon").css("transition", "transform 0.5s ease-in-out");
+			  } else {
+				$(".ribbon").css("transition", "none");
+			  }
 			}
-		  });
+
 
 		  //switchPage(-1);
 		});
@@ -75,51 +89,57 @@
 <body>
   <div class="top-blank"> </div>
   <div class="main">
-    <div class="arrow left-arrow">&larr;</div>
-    <div class="arrow right-arrow">&rarr;</div>
-
-    <div class="ribbon">
-	  <div>
-		<!-- Page 1 content -->
-		<div class="page-content">
-		  <h1>Page 1</h1>
-		  <img src="Me.png" alt="Page 1">
-		  <p>This is the content for Page 1.</p>
-		</div>
-	  </div>
-	  <div>
-		<!-- Page 2 content -->
-		<div class="page-content">
-		  <h1>Page 2</h1>
-		  <img src="Me2.png" alt="Page 2">
-		  <p>This is the content for Page 2.</p>
-		</div>
-	  </div>
-	  <div>
-		<!-- Page 3 content -->
-		<div class="page-content">
-		  <h1>Page 3 Title</h1>
-		  <div class="video-container">
-			<video src="page3-video.mp4" controls></video>
+    <div class="arrow left-arrow"> 
+		&larr; 
+			<div class="arrow-overlay"></div>
+	</div>
+	<div class="arrow right-arrow"> 
+		&rarr; 
+			<div class="arrow-overlay"></div>
+	</div>
+	<div class="ribbon-wrapper">
+		<div class="ribbon">
+		  <div>
+			<!-- Page 1 content -->
+			<div class="page-content">
+			  <h1>Page 1</h1>
+			  <div class="media-container">
+				  <img src="Me.png" alt="Page 1">
+				  <p>This is the content for Page 1.</p>
+				</div>
+			</div>
 		  </div>
-		  <div class="text-container">
-			<p>Page 3 content goes here.</p>
+		  <div>
+			<!-- Page 2 content -->
+			<div class="page-content">
+			  <h1>Page 2</h1>
+			  <div class="media-container">
+				  <img src="Me2.png" alt="Page 2">
+				  <p>This is the content for Page 2.</p>
+				</div>
+			</div>
+		  </div>
+		  <div>
+			<!-- Page 3 content -->
+			<div class="page-content">
+			  <h1>Page 3 Title</h1>
+			  <div class="video-container">
+				  <video src="page3-video.mp4" controls></video>
+				  <p>Page 3 content goes here.</p>
+				</div>
+			</div>
+		  </div>
+		  <div>
+			<!-- Page 4 content -->
+			<div class="page-content">
+			  <h1>Page 4</h1>
+			  <div class="video-container">
+				  <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec rhoncus ligula, a gravida mi. Donec id ligula dui. Mauris eu ipsum in mauris finibus rutrum eget vel lectus. Suspendisse sit amet vestibulum elit, ac blandit ante.</p>
+				</div>
+			</div>
 		  </div>
 		</div>
-	  </div>
-	  <div>
-		<!-- Page 4 content -->
-		<div class="page-content">
-		  <h1>Page 4</h1>
-		  <div id="video-container">
-			<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-		  </div>
-		  <div id="text-container">
-			<h2>Page 4 Description</h2>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec rhoncus ligula, a gravida mi. Donec id ligula dui. Mauris eu ipsum in mauris finibus rutrum eget vel lectus. Suspendisse sit amet vestibulum elit, ac blandit ante.</p>
-		  </div>
-		</div>
-	  </div>
 	</div>
 	<div class="bottom-image-slider">
 

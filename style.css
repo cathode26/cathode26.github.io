@@ -37,6 +37,16 @@ body {
   transform: translateY(-50%);
 }
 
+.arrow-overlay {
+  position: absolute;
+  width: 50px;
+  height: 100vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
 .right-arrow {
   position: absolute;
   top: 50%;
@@ -70,12 +80,18 @@ body {
   transition: transform 0.5s ease-in-out;
 }
 
+.ribbon-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
 .ribbon > div {
   flex-shrink: 0;
   width: 100vw;
 }
 
 .page-content {
+  margin-left: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -85,5 +101,31 @@ body {
 }
 
 .bottom-image-slider {
-  height: 25%;
+  position: fixed; /* Add this line */
+  bottom: 0; /* Add this line */
+  width: 100%; /* Add this line */
+  background-color: rgba(255, 255, 255, 0.9); /* Add this line for a semi-transparent background */
+  z-index: 100; /* Add this line to ensure it's always on top */
+}
+
+.media-container,
+.video-container {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  align-items: center;
+  width: 100%;
+}
+
+.media-container img,
+.video-container video,
+.video-container iframe {
+  margin-left: auto;
+  max-width: 100%;
+}
+
+.media-container p,
+.video-container p {
+  text-align: left;
+  margin-left: 20px;
+  margin-right: 200px; /* Add this line */
 }
