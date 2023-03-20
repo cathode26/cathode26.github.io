@@ -38,6 +38,7 @@
 			  if (index === -1) {
 				return;
 			  }
+			  stopVideo(); 
 			  toggleTransition(true);
 			  var newPosition = (-1 * index * 100) + "vw";
 			  $(".ribbon").css("transform", "translateX(" + newPosition + ")");
@@ -48,7 +49,11 @@
 			  activeIndex = index;
 			}
 
-
+		function stopVideo() {
+		  var iframe = document.getElementById('youtube-video');
+		  var video = iframe.contentWindow;
+		  video.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
+		}
 
 		  $('.image-slider img').on('click', function() {
 			var index = $(this).index();
@@ -137,7 +142,7 @@
 			<div class="page-content">
 			  <h1>Page 4</h1>
 			  <div class="video-container">
-				  <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				  <iframe id="youtube-video" width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 				  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec rhoncus ligula, a gravida mi. Donec id ligula dui. Mauris eu ipsum in mauris finibus rutrum eget vel lectus. Suspendisse sit amet vestibulum elit, ac blandit ante.</p>
 				</div>
 			</div>
