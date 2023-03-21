@@ -11,14 +11,16 @@
 			["image1a.png", "image1b.png"],
 			["image2a.png", "image2b.png"],
 			["image3a.png", "image3b.png"],
-			["image4a.png", "image4b.png"]
+			["image4a.png", "image4b.png"],
+			["image5a.png", "image5b.png"]
 		  ];
-		  var activeIndex = 0; // Change this line
+		  var activeIndex = 0;
 
 		  $('.image-slider img:eq(0)').attr('src', images[0][1]);
 		  $('.image-slider img:eq(1)').attr('src', images[1][0]);
 		  $('.image-slider img:eq(2)').attr('src', images[2][0]);
 		  $('.image-slider img:eq(3)').attr('src', images[3][0]);
+		  $('.image-slider img:eq(4)').attr('src', images[4][0]);
 
 		  $('.image-slider img').on('mouseenter', function() {
 			var index = $(this).index();
@@ -38,7 +40,7 @@
 			  if (index === -1) {
 				return;
 			  }
-			  stopVideo(); 
+			  pauseVideos(); // Add this line to pause the videos
 			  toggleTransition(true);
 			  var newPosition = (-1 * index * 100) + "vw";
 			  $(".ribbon").css("transform", "translateX(" + newPosition + ")");
@@ -46,14 +48,8 @@
 				$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
 			  }
 			  $(".image-slider img:eq(" + index + ")").attr("src", images[index][1]);
-			  activeIndex = index;
-			}
-
-		function stopVideo() {
-		  var iframe = document.getElementById('youtube-video');
-		  var video = iframe.contentWindow;
-		  video.postMessage('{"event":"command","func":"' + 'pauseVideo' + '","args":""}', '*');
-		}
+			  activeIndex = index;			  
+		  }
 
 		  $('.image-slider img').on('click', function() {
 			var index = $(this).index();
@@ -88,11 +84,42 @@
 			  }
 			}
 
+		   // YouTube video handling
+			var youtubeVideoIds = [
+			  "aiFt6kaaomU", // Star Cluck
+			  "aBHRRuYBLr8", // Fury Mallard
+			];
+			var players = [];
+			
+			var videoNameMap = {
+				"starcluck": 0,
+				"furymallard": 1,
+			  };
 
-		  //switchPage(-1);
+			function onYouTubeIframeAPIReady() {
+				//console.log("onYouTubeIframeAPIReady()");
+				youtubeVideoIds.forEach(function (videoId, index) {
+				  var name = Object.keys(videoNameMap).find(key => videoNameMap[key] === index);
+				  players[index] = new YT.Player("youtube-" + name, {
+					videoId: videoId,
+				  });
+				});
+			  }
+
+			function pauseVideos() {
+			  players.forEach(function (player) {
+				//console.log("pauseVideos()");
+				if (player && player.pauseVideo && typeof player.pauseVideo === 'function') {
+				  player.pauseVideo();
+				}
+			  });
+			}
+
+			window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 		});
 
 	</script>
+	<script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
   <div class="top-blank"> </div>
@@ -142,8 +169,18 @@
 			<div class="page-content">
 			  <h1>Page 4</h1>
 			  <div class="video-container">
-				  <iframe id="youtube-video" width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-				  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec rhoncus ligula, a gravida mi. Donec id ligula dui. Mauris eu ipsum in mauris finibus rutrum eget vel lectus. Suspendisse sit amet vestibulum elit, ac blandit ante.</p>
+				<iframe id="youtube-starcluck" width="560" height="315" src="https://www.youtube.com/embed/aiFt6kaaomU?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				  <p>Star Cluck.</p>
+				</div>
+			</div>
+		  </div>
+		  <div>
+			<!-- Page 5 content -->
+			<div class="page-content">
+			  <h1>Page 5</h1>
+			  <div class="video-container">
+				<iframe id="youtube-furymallard" width="560" height="315" src="https://www.youtube.com/embed/aBHRRuYBLr8?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				  <p>Fury Mallard.</p>
 				</div>
 			</div>
 		  </div>
@@ -156,6 +193,8 @@
 		  <img src="image2a.png">
 		  <img src="image3a.png">
 		  <img src="image4a.png">
+		  <img src="image5a.png">
+
 		  <!-- Add all your image sources here -->
 		</div>
 		
