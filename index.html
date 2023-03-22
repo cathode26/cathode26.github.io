@@ -71,7 +71,8 @@
 			});
 			
 			var transitionTimeoutId;
-			
+			var redrawIntervalId;
+
 			function toggleTransition(enable) {
 			  if (enable) {
 				$('.ribbon').css('transition', 'transform 0.5s ease-in-out');
@@ -79,9 +80,19 @@
 				transitionTimeoutId = setTimeout(function() {
 				  toggleTransition(false);
 				}, 500); // The duration of the transition in milliseconds
+
+				// Set the redraw interval during the ribbon transition
+				redrawIntervalId = setInterval(redrawYoutubeContainer, 16); // Approximately 60 FPS
 			  } else {
 				$('.ribbon').css('transition', 'none');
+				clearInterval(redrawIntervalId); // Clear the redraw interval
 			  }
+			}
+
+			function redrawYoutubeContainer() {
+			  $(".video-container").css("opacity", function (index, currentOpacity) {
+				return currentOpacity == 1 ? 0.999 : 1;
+			  });
 			}
 
 		   // YouTube video handling
