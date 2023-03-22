@@ -2,11 +2,11 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  /*background-image: url('tetrisbg.png'); 
-   Replace with the correct file extension of your image 
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;*/
+  background-color: gray; /* Add this line */
+}
+
+.content-wrapper {
+  min-height: calc(100% - 25%);
 }
 
 .top-blank {
@@ -16,7 +16,7 @@ body {
 .main {
   margin: 0 auto;
   padding: 20px;
-  height: calc(100% - 5% - 25%);
+  height: 100%;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
@@ -107,11 +107,12 @@ body {
 }
 
 .bottom-image-slider {
-  position: fixed; /* Add this line */
-  bottom: 0; /* Add this line */
-  width: 100%; /* Add this line */
-  background-color: rgba(255, 255, 255, 0.9); /* Add this line for a semi-transparent background */
-  z-index: 100; /* Add this line to ensure it's always on top */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: black;
+  z-index: 100;
 }
 
 .video-container {
