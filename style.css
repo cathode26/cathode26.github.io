@@ -12,6 +12,38 @@ h1 {
   text-transform: uppercase; /* Optional: to make the text all uppercase */
 }
 
+.social-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.icon-linkedin,
+.icon-email {
+  width: 40px;
+  height: 40px;
+  background-color: #333;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 20px;
+  margin: 0 10px;
+  transition: background-color 0.3s ease;
+}
+
+.icon-linkedin:hover,
+.icon-email:hover {
+  background-color: #555;
+}
+
+.icon-linkedin i,
+.icon-email i {
+  margin-top: 2px; /* Adjust the icon's vertical position */
+}
+
 .content-wrapper {
   min-height: calc(100% - 25%);
 }
