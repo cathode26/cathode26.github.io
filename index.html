@@ -7,6 +7,17 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
+	<!-- Add the Unity WebGL player styles and scripts here -->
+	<link rel="shortcut icon" href="TemplateData/favicon.ico">
+	<link rel="stylesheet" href="TemplateData/style.css">
+	<script src="TemplateData/UnityProgress.js"></script>
+	<script src="Build/UnityLoader.js"></script>
+	<script>
+	window.onload = function() {
+	  var unityInstance = UnityLoader.instantiate("unityContainer", "Build/3-23-23.json", {onProgress: UnityProgress});
+	};	
+	</script>
+	<!-- End of Unity WebGL player code -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$(document).ready(function() {
@@ -15,7 +26,9 @@
 			["image2a.png", "image2b.png"],
 			["image3a.png", "image3b.png"],
 			["image4a.png", "image4b.png"],
-			["image5a.png", "image5b.png"]
+			["image5a.png", "image5b.png"],
+			["image6a.png", "image6b.png"]
+
 		  ];
 		  var activeIndex = 0;
 
@@ -24,7 +37,8 @@
 		  $('.image-slider img:eq(2)').attr('src', images[2][0]);
 		  $('.image-slider img:eq(3)').attr('src', images[3][0]);
 		  $('.image-slider img:eq(4)').attr('src', images[4][0]);
-
+		  $('.image-slider img:eq(5)').attr('src', images[5][0]);
+			
 		  $('.image-slider img').on('mouseenter', function() {
 			var index = $(this).index();
 			if (index != activeIndex) {
@@ -51,8 +65,20 @@
 				$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
 			  }
 			  $(".image-slider img:eq(" + index + ")").attr("src", images[index][1]);
-			  activeIndex = index;			  
+			  activeIndex = index;	
+			  updatePageVisibility(activeIndex);
 		  }
+		  
+		  function updatePageVisibility(index) {
+			  // Hide or show the webgl-content div depending on the current page
+			  const webglContent = document.getElementById('webgl-content');
+			  if (index === 3) { // Since index starts from 0, the 4th page will have an index of 3
+				webglContent.style.display = 'block';
+				console.log("show webglvideo");
+			  } else {
+				webglContent.style.display = 'none';
+			  }
+			}
 
 		  $('.image-slider img').on('click', function() {
 			var index = $(this).index();
@@ -102,7 +128,8 @@
 			var youtubeVideoIds = [
 			  "aiFt6kaaomU", // Star Cluck
 			  "aBHRRuYBLr8", // Fury Mallard
-			  "-esJuFV-jWU",
+			  "-esJuFV-jWU", // Best Casino Legends Slots 777
+			  "zFnPBs_eQy0", // VMAX
 			];
 			var players = [];
 			
@@ -110,6 +137,7 @@
 				"starcluck": 0,
 				"furymallard": 1,
 				"bestcasino": 2,
+				"vmax": 3,
 			  };
 
 			function onYouTubeIframeAPIReady() {
@@ -184,17 +212,35 @@
 			  <div>
 				<!-- Page 3 content -->
 				<div class="page-content">
-				  <h1>Page 3 Title</h1>
+				  <h1>VMAX </h1>
 				  <div class="video-container">
-					  <video src="page3-video.mp4" controls></video>
-					  <p>Page 3 content goes here.</p>
+					<iframe id="youtube-vmax" width="560" height="315" src="https://www.youtube.com/embed/zFnPBs_eQy0?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+					  <p>VMAX Simulator</p>
 					</div>
 				</div>
 			  </div>
 			  <div>
 				<!-- Page 4 content -->
 				<div class="page-content">
-				  <h1>Page 4</h1>
+				  <h1>MLP</h1>
+				  <div class="webgl-content webgl-hidden">
+					  <!-- Add the Unity WebGL player container here -->
+					  <div class="webgl-content">
+						<div id="unityContainer" style="width: 1024px; height: 576px"></div>
+						<div class="footer">
+						  <div class="webgl-logo"></div>
+						  <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
+						 <div class="title">My Little Pony</div>
+				         </div>
+					  </div>
+				  </div>
+				<!-- End of Unity WebGL player container -->
+				</div>
+			  </div>
+			  <div>
+				<!-- Page 5 content -->
+				<div class="page-content">
+				  <h1>Page 5</h1>
 				  <div class="video-container">
 					<iframe id="youtube-starcluck" width="560" height="315" src="https://www.youtube.com/embed/aiFt6kaaomU?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 					  <p>Star Cluck.</p>
@@ -202,9 +248,9 @@
 				</div>
 			  </div>
 			  <div>
-				<!-- Page 5 content -->
+				<!-- Page 6 content -->
 				<div class="page-content">
-				  <h1>Page 5</h1>
+				  <h1>Page 6</h1>
 				  <div class="video-container">
 					<iframe id="youtube-furymallard" width="560" height="315" src="https://www.youtube.com/embed/aBHRRuYBLr8?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 					  <p>Fury Mallard.</p>
@@ -221,7 +267,7 @@
 			  <img src="image3a.png">
 			  <img src="image4a.png">
 			  <img src="image5a.png">
-
+			  <img src="image6a.png">
 			  <!-- Add all your image sources here -->
 			</div>
 			

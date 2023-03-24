@@ -120,7 +120,7 @@ h1 {
   display: flex;
   overflow-x: hidden;
   height: 100%;
-  width: 500vw; /* Updated */
+  width: 600vw; /* Updated */
   transition: transform 0.5s ease-in-out;
 }
 
@@ -134,7 +134,13 @@ h1 {
   width: 100vw;
 }
 
+.webgl-hidden {
+  display: none;
+}
+
+
 .page-content {
+  overflow: hidden;
   margin-left: auto;
   margin-right: auto;
   width: 60%; 
