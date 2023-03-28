@@ -144,14 +144,6 @@
 			  $('.ribbon').off('transitionend');
 			}
 
-			// Add the following function to resize the Unity WebGL player on window resize
-			$(window).on('resize', function() {
-			  if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
-			    unityInstance?.SetFullscreen(0);
-			    unityInstance?.SetFullscreen(1);
-			  }
-			});
-
 		  $('.image-slider img').on('click', function() {
 			var index = $(this).index();
 			if (index != activeIndex) {
@@ -256,11 +248,13 @@
 				<!-- Page 1 content -->
 				<div class="page-content">
 				  <h1>Game Developer</h1>
-				  <div class="intro-text">
+				  <div class="intro-text-wrapper">
+				    <div class="intro-text">
 					  <p>Hi, I'm <span class="highlight">Vincent J. Liguori</span>, a skilled game developer and software engineer with over 10 years of experience in the industry. My expertise lies in Unity 3D, plugins, engine development, C#, C++, Lua and DirectX.</p>
 					  <p>Throughout my career, I've worked with several companies to develop engaging and immersive games that captivate audiences. I'm experienced in collaborating with teams of designers, artists, and programmers to create top-quality games that meet and exceed expectations. My strong problem-solving skills and ability to work under tight deadlines have allowed me to consistently deliver high-quality results.  Additionally, I have extensive experience developing a serious game engine used for simulation-based training scenarios that teach users how to operate subsea equipment. This experience has broadened my expertise and allowed me to excel in delivering engaging, high-quality games across various genres.</p>
 					  <p>Having earned a Bachelor's and Master's degree in Computer Science, I bring a strong foundation in programming and software development to my work. My diverse background includes a wide range of projects and technology which equips me with the necessary skills to tackle any challenge in the game development field. As a versatile and committed professional, I look forward to contributing my knowledge and skills to any development team.</p>
-				  </div>
+				    </div>
+			      </div>
 				  <div class="social-icons">
 					  <a href="https://www.linkedin.com/in/vincent-liguori-77329724/" target="_blank" class="icon-linkedin">
 						<i class="fab fa-linkedin"></i>
@@ -276,9 +270,9 @@
 				<div class="page-content">
 				  <h1>Best Casino Legends Slots 777</h1>
 				  <div class="video-container">
-					<iframe id="youtube-bestcasino" width="560" height="315" src="https://www.youtube.com/embed/-esJuFV-jWU?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-					  <p>https://play.google.com/store/apps/details?id=com.diwip.socialslots&hl=en_US&gl=US</p>
-					</div>
+					<iframe id="youtube-bestcasino" width="896" height="504" src="https://www.youtube.com/embed/-esJuFV-jWU?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+					<p>https://play.google.com/store/apps/details?id=com.diwip.socialslots&hl=en_US&gl=US</p>
+				  </div>
 				</div>
 			  </div>
 			  <div>
@@ -286,7 +280,7 @@
 				<div class="page-content">
 				  <h1>VMAX </h1>
 				  <div class="video-container">
-					<iframe id="youtube-vmax" width="560" height="315" src="https://www.youtube.com/embed/zFnPBs_eQy0?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+					<iframe id="youtube-vmax" width="896" height="504" src="https://www.youtube.com/embed/zFnPBs_eQy0?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 					  <p>VMAX Simulator</p>
 					</div>
 				</div>
@@ -294,6 +288,7 @@
 			  <div>
 				<!-- Page 4 content -->
 				<div class="page-content" style="height: 100%;">
+				  <h1>My Little Pony </h1>
 				  <div class="centered" id="webgl-content">
 					<!-- Add the Unity WebGL player container here -->
 					<div class="webgl-content">
@@ -313,7 +308,7 @@
 				<div class="page-content">
 				  <h1>Page 5</h1>
 				  <div class="video-container">
-					<iframe id="youtube-starcluck" width="560" height="315" src="https://www.youtube.com/embed/aiFt6kaaomU?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+					<iframe id="youtube-starcluck" width="896" height="504" src="https://www.youtube.com/embed/aiFt6kaaomU?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 					  <p>Star Cluck.</p>
 					</div>
 				</div>
@@ -323,7 +318,7 @@
 				<div class="page-content">
 				  <h1>Page 6</h1>
 				  <div class="video-container">
-					<iframe id="youtube-furymallard" width="560" height="315" src="https://www.youtube.com/embed/aBHRRuYBLr8?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+					<iframe id="youtube-furymallard" width="896" height="504" src="https://www.youtube.com/embed/aBHRRuYBLr8?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 					  <p>Fury Mallard.</p>
 					</div>
 				</div>
