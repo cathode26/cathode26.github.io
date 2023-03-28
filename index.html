@@ -79,9 +79,13 @@
 			  if (index === 3) { // Since index starts from 0, the 4th page will have an index of 3
 				webglContent.style.visibility = 'visible';
 				console.log("show webglvideo");
-			  } else {
-				// Add a transitionend event listener to the ribbon
-				$('.ribbon').on('transitionend', ribbonTransitionEnd);
+				// Add the following line to start the Unity WebGL player
+				 if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
+				  unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', true);
+				} else {
+				  // Add a transitionend event listener to the ribbon
+				  $('.ribbon').on('transitionend', ribbonTransitionEnd);
+				}
 			  }
 			}
 
@@ -91,11 +95,23 @@
 			  if (activeIndex !== 3) {
 				webglContent.style.visibility = 'hidden';
 				console.log("hide webglvideo");
+				// Add the following line to stop the Unity WebGL player
+				if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
+				  unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', false);
+				}			  
 			  }
 
 			  // Remove the event listener to prevent multiple calls
 			  $('.ribbon').off('transitionend');
 			}
+
+			// Add the following function to resize the Unity WebGL player on window resize
+			$(window).on('resize', function() {
+			  if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
+			    unityInstance?.SetFullscreen(0);
+			    unityInstance?.SetFullscreen(1);
+			  }
+			});
 
 		  $('.image-slider img').on('click', function() {
 			var index = $(this).index();
