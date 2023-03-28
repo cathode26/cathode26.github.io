@@ -82,6 +82,7 @@
 				// Add the following line to start the Unity WebGL player
 				 if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
 				  unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', true);
+				  console.log("turning ShowPlayer on");
 				} else {
 				  // Add a transitionend event listener to the ribbon
 				  $('.ribbon').on('transitionend', ribbonTransitionEnd);
@@ -98,6 +99,7 @@
 				// Add the following line to stop the Unity WebGL player
 				if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
 				  unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', false);
+				  console.log("turning ShowPlayer off");
 				}			  
 			  }
 
