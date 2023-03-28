@@ -65,11 +65,12 @@
 				$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
 			  }
 			  $(".image-slider img:eq(" + index + ")").attr("src", images[index][1]);
-			  activeIndex = index;	
-			  updatePageVisibility(activeIndex);
-		  }
-		  
-		  function updatePageVisibility(index) {
+			  var previousIndex = activeIndex;
+			  activeIndex = index;
+			  updatePageVisibility(activeIndex, previousIndex);
+			}
+
+			function updatePageVisibility(index, previousIndex) {
 			  // Hide or show the webgl-content div depending on the current page
 			  const webglContent = document.getElementById('webgl-content');
 
@@ -80,30 +81,32 @@
 				webglContent.style.visibility = 'visible';
 				console.log("show webglvideo");
 				// Add the following line to start the Unity WebGL player
-				 if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
+				if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
 				  unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', true);
 				  console.log("turning ShowPlayer on");
-				 }
+				}
 			  } 
 			  else 
 			  {
-				  // Add a transitionend event listener to the ribbon
-				  $('.ribbon').on('transitionend', ribbonTransitionEnd);
-				  console.log("added transitionend");
+				// Add a transitionend event listener to the ribbon
+				$('.ribbon').on('transitionend', function() {
+				  ribbonTransitionEnd(previousIndex);
+				});
+				console.log("added transitionend");
 			  }
 			}
 
-			function ribbonTransitionEnd() {
+			function ribbonTransitionEnd(previousIndex) {
 			  // This function will be called when the transition ends
 			  const webglContent = document.getElementById('webgl-content');
-			  if (activeIndex !== 3) {
+			  if (activeIndex !== 3 && previousIndex === 3) {
 				webglContent.style.visibility = 'hidden';
 				console.log("hide webglvideo");
 				// Add the following line to stop the Unity WebGL player
 				if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
 				  unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', false);
 				  console.log("turning ShowPlayer off");
-				}			  
+				}       
 			  }
 
 			  // Remove the event listener to prevent multiple calls
