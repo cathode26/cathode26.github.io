@@ -72,12 +72,29 @@
 		  function updatePageVisibility(index) {
 			  // Hide or show the webgl-content div depending on the current page
 			  const webglContent = document.getElementById('webgl-content');
+
+			  // Remove any previous transitionend event listeners
+			  $('.ribbon').off('transitionend');
+
 			  if (index === 3) { // Since index starts from 0, the 4th page will have an index of 3
 				webglContent.style.display = 'block';
 				console.log("show webglvideo");
 			  } else {
-				webglContent.style.display = 'none';
+				// Add a transitionend event listener to the ribbon
+				$('.ribbon').on('transitionend', ribbonTransitionEnd);
 			  }
+			}
+
+			function ribbonTransitionEnd() {
+			  // This function will be called when the transition ends
+			  const webglContent = document.getElementById('webgl-content');
+			  if (activeIndex !== 3) {
+				webglContent.style.display = 'none';
+				console.log("hide webglvideo");
+			  }
+
+			  // Remove the event listener to prevent multiple calls
+			  $('.ribbon').off('transitionend');
 			}
 
 		  $('.image-slider img').on('click', function() {
