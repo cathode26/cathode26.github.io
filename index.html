@@ -13,7 +13,10 @@
 	<script src="TemplateData/UnityProgress.js"></script>
 	<script src="Build/UnityLoader.js"></script>
 	<script>
+	let unityGameLoaded = false; // Add this line to create the unityGameLoaded flag
 	let unityInstance; // Declare unityInstance here
+	let interval;
+
 	window.onload = function() {
 	    unityInstance = UnityLoader.instantiate("unityContainer", "Build/3-28-23.json", {onProgress: UnityProgress});
 	};	
@@ -78,6 +81,17 @@
 			  updatePageVisibility(activeIndex, previousIndex); // Pass previousIndex as an argument
 			}
 
+			function callLoadLevelWhenReady() {
+			  if (unityGameLoaded && index === 3) {
+			    console.log("turning ShowPlayer on");
+				unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
+				clearInterval(interval);
+			  }
+			  else if(index !== 3)
+			  {
+				clearInterval(interval);
+			  }
+			}
 
 			function updatePageVisibility(index, previousIndex) {
 			  // Hide or show the webgl-content div depending on the current page
@@ -93,6 +107,10 @@
 				if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
 				  unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
 				  console.log("turning ShowPlayer on");
+				}
+				else if(unityGameLoaded === false)
+				{
+				    interval = setInterval(callLoadLevelWhenReady, 500); // Check every 1000 milliseconds (1 second)
 				}
 			  } 
 			  else 
