@@ -83,10 +83,13 @@
 				 if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
 				  unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', true);
 				  console.log("turning ShowPlayer on");
-				} else {
+				 }
+			  } 
+			  else 
+			  {
 				  // Add a transitionend event listener to the ribbon
 				  $('.ribbon').on('transitionend', ribbonTransitionEnd);
-				}
+				  console.log("added transitionend");
 			  }
 			}
 
