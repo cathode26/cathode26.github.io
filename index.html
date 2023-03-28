@@ -81,7 +81,7 @@
 			  updatePageVisibility(activeIndex, previousIndex); // Pass previousIndex as an argument
 			}
 
-			function callLoadLevelWhenReady() {
+			function callLoadLevelWhenReady(index) {
 			  if (unityGameLoaded && index === 3) {
 			    console.log("turning ShowPlayer on");
 				unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
@@ -110,7 +110,9 @@
 				}
 				else if(unityGameLoaded === false)
 				{
-				    interval = setInterval(callLoadLevelWhenReady, 500); // Check every 1000 milliseconds (1 second)
+				    interval = setInterval(function() {
+				     callLoadLevelWhenReady(index);
+				   }, 500); // Check every 1000 milliseconds (1 second)
 				}
 			  } 
 			  else 
