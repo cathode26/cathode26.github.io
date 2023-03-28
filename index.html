@@ -82,8 +82,8 @@
 			}
 
 			function callLoadLevelWhenReady(index) {
-			  if (unityGameLoaded && index === 3) {
-			    console.log("turning ShowPlayer on");
+			  if (unityGameLoaded === true && index === 3) {
+			    console.log("callLoadLevelWhenReady turning ShowPlayer on");
 				unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
 				clearInterval(interval);
 			  }
@@ -104,7 +104,7 @@
 				webglContent.style.visibility = 'visible';
 				console.log("show webglvideo");
 				// Add the following line to start the Unity WebGL player
-				if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
+				if (typeof unityInstance !== 'undefined' && unityInstance !== null && unityGameLoaded === true) {
 				  unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
 				  console.log("turning ShowPlayer on");
 				}
