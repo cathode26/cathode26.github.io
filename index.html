@@ -53,21 +53,26 @@
 			}
 		  });
 
-		  function switchPage(index) {
-			  if (index === -1) {
-				return;
-			  }
-			  pauseVideos(); // Add this line to pause the videos
-			  toggleTransition(true);
-			  var newPosition = (-1 * index * 100) + "vw";
-			  $(".ribbon").css("transform", "translateX(" + newPosition + ")");
-			  if (activeIndex !== -1) {
-				$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
-			  }
-			  $(".image-slider img:eq(" + index + ")").attr("src", images[index][1]);
-			  var previousIndex = activeIndex;
-			  activeIndex = index;
-			  updatePageVisibility(activeIndex, previousIndex);
+			function switchPage(index) {
+				if (index === -1) {
+					return;
+				}
+				pauseVideos(); // Add this line to pause the videos
+				toggleTransition(true);
+				var newPosition = (-1 * index * 100) + "vw";
+				$(".ribbon").css("transform", "translateX(" + newPosition + ")");
+
+				// Call ribbonTransitionEnd() if the previous active index was 3 (page 4)
+				if (activeIndex === 3) {
+					ribbonTransitionEnd();
+				}
+
+				if (activeIndex !== -1) {
+					$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
+				}
+				$(".image-slider img:eq(" + index + ")").attr("src", images[index][1]);
+				activeIndex = index;
+				updatePageVisibility(activeIndex);
 			}
 
 			function updatePageVisibility(index, previousIndex) {
