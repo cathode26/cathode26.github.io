@@ -13,8 +13,9 @@
 	<script src="TemplateData/UnityProgress.js"></script>
 	<script src="Build/UnityLoader.js"></script>
 	<script>
+	let unityInstance; // Declare unityInstance here
 	window.onload = function() {
-	  var unityInstance = UnityLoader.instantiate("unityContainer", "Build/3-23-23.json", {onProgress: UnityProgress});
+	    unityInstance = UnityLoader.instantiate("unityContainer", "Build/3-23-23.json", {onProgress: UnityProgress});
 	};	
 	</script>
 	<!-- End of Unity WebGL player code -->
