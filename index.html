@@ -54,26 +54,29 @@
 		  });
 
 			function switchPage(index) {
-				if (index === -1) {
-					return;
-				}
-				pauseVideos(); // Add this line to pause the videos
-				toggleTransition(true);
-				var newPosition = (-1 * index * 100) + "vw";
-				$(".ribbon").css("transform", "translateX(" + newPosition + ")");
+			  if (index === -1) {
+				return;
+			  }
+			  pauseVideos(); // Add this line to pause the videos
+			  toggleTransition(true);
+			  var newPosition = (-1 * index * 100) + "vw";
+			  $(".ribbon").css("transform", "translateX(" + newPosition + ")");
 
-				// Call ribbonTransitionEnd() if the previous active index was 3 (page 4)
-				if (activeIndex === 3) {
-					ribbonTransitionEnd();
-				}
+			  // Call ribbonTransitionEnd() if the previous active index was 3 (page 4)
+			  if (activeIndex === 3 && index !== 3) {
+				ribbonTransitionEnd(activeIndex); // Pass the previous active index
+			  }
 
-				if (activeIndex !== -1) {
-					$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
-				}
-				$(".image-slider img:eq(" + index + ")").attr("src", images[index][1]);
-				activeIndex = index;
-				updatePageVisibility(activeIndex);
+			  var previousIndex = activeIndex; // Store the current activeIndex as previousIndex
+
+			  if (activeIndex !== -1) {
+				$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
+			  }
+			  $(".image-slider img:eq(" + index + ")").attr("src", images[index][1]);
+			  activeIndex = index;
+			  updatePageVisibility(activeIndex, previousIndex); // Pass previousIndex as an argument
 			}
+
 
 			function updatePageVisibility(index, previousIndex) {
 			  // Hide or show the webgl-content div depending on the current page
@@ -93,17 +96,19 @@
 			  } 
 			  else 
 			  {
-				// Add a transitionend event listener to the ribbon
-				$('.ribbon').on('transitionend', function() {
+				// Call ribbonTransitionEnd after the transition duration (in milliseconds)
+				setTimeout(function() {
 				  ribbonTransitionEnd(previousIndex);
-				});
-				console.log("added transitionend");
+				}, 500); // The duration of the transition in milliseconds
+				console.log("added setTimeout for ribbonTransitionEnd");
 			  }
 			}
 
 			function ribbonTransitionEnd(previousIndex) {
 			  // This function will be called when the transition ends
 			  const webglContent = document.getElementById('webgl-content');
+			  console.log("activeIndex " + activeIndex);
+			  console.log("previousIndex " + previousIndex);
 			  if (activeIndex !== 3 && previousIndex === 3) {
 				webglContent.style.visibility = 'hidden';
 				console.log("hide webglvideo");
