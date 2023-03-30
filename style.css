@@ -20,7 +20,8 @@ h1 {
 }
 
 .icon-linkedin,
-.icon-email {
+.icon-email,
+.icon-github {
   width: 40px;
   height: 40px;
   background-color: #333;
@@ -35,12 +36,14 @@ h1 {
 }
 
 .icon-linkedin:hover,
-.icon-email:hover {
+.icon-email:hover,
+.icon-github:hover {
   background-color: #555;
 }
 
 .icon-linkedin i,
-.icon-email i {
+.icon-email i,
+.icon-github i {
   margin-top: 2px; /* Adjust the icon's vertical position */
 }
 
