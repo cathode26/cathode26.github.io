@@ -102,13 +102,13 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
+  margin: 5px 0;
 }
 
 .image-slider img {
-  height: 100px;
+  height: 80px;
   margin: 0 5px;
-  border: 2px solid #ddd;
+  border: 1px solid #ddd;
   cursor: pointer;
 }
 
