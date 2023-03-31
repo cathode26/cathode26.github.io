@@ -98,7 +98,9 @@ h1 {
 }
 
 .arrow-overlay:focus {
-  outline: none;
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .right-arrow {
