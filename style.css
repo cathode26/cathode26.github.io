@@ -97,6 +97,10 @@ h1 {
   cursor: pointer;
 }
 
+.arrow-overlay:focus {
+  outline: none;
+}
+
 .right-arrow {
   position: absolute;
   top: 50%;
