@@ -183,26 +183,53 @@ h1 {
 
 .video-container {
   opacity: 1;
+  margin-top: 5%;
+  align-items: flex-start;
 }
 
-.media-container,
 .video-container {
+  opacity: 1;
+  margin-top: 5%;
   display: grid;
   grid-template-columns: 70% 30%;
-  align-items: center;
+  justify-items: center;
+  align-items: flex-start; /* Update this line */
   width: 100%;
 }
 
-.media-container img,
 .video-container video,
 .video-container iframe {
   margin-left: auto;
   max-width: 100%;
 }
 
-.media-container p,
 .video-container p {
+  justify-self: center;
+  align-self: center;
   text-align: left;
   margin-left: 20px;
-  margin-right: 200px; /* Add this line */
+  margin-right: 20px;
+}
+
+/* Responsive video and text */
+@media (max-width: 1250px) {
+  .video-container {
+    display: block;
+  }
+  
+  .video-container iframe {
+    width: 100%;
+    height: auto;
+    min-height: 468px; /* Optional: Set a minimum height */
+	max-width: 832px
+  }
+  
+  .video-container p {
+    width: 100%;
+    margin: 0;
+	margin-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+	text-align: center;
+  }
 }

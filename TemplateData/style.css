@@ -1,7 +1,6 @@
 #unityContainer {
-  width: 960px;
-  height: 600px;
-  margin: auto;
+  width: 832px; /* Update this line */
+  height: 468px;
   background: #222C37;
   border: 1px solid #4C6085;
   display: flex;
@@ -11,7 +10,6 @@
 
 #webgl-content {
   display: flex;
-  justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
@@ -22,6 +20,8 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  max-width: 832px;
+  margin: 0 auto;
 }
 
 .webgl-content * {
@@ -34,8 +34,67 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
   height: 100%;
+  margin: 0 auto;
+  padding-top: 5%; /* Add this line and adjust the value as needed */
+}
+
+.webgl-wrapper {
+  width: 100%;
+  max-width: 832px;
+  margin-left: auto;
+}
+
+.webgl-container {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  justify-items: center;
+  align-items: flex-start; /* Change this line */
+  align-items: center;
+  width: 100%;
+  margin-top: 5%; 
+}
+
+.webgl-container-text {
+  justify-self: center;
+  align-self: center;
+}
+
+.webgl-container p {
+  text-align: left;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+/* Responsive WebGL and text */
+@media (max-width: 1250px) {
+  .webgl-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .webgl-container .webgl-content {
+    width: 100%;
+    height: auto;
+    min-height: 468px;
+    max-width: 832px;
+  }
+
+  .webgl-container p {
+    width: 100%;
+    margin: 0;
+    margin-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    text-align: center;
+  }
+
+  .webgl-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-left: 0; /* Reset the margin-left property */
+  }
 }
 
 .webgl-content .logo, .progress {position: absolute; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);}
@@ -50,7 +109,7 @@
 
 .webgl-content .footer {
   margin-top: 5px;
-  width: 960px; /* Add this line to set the width of the footer */
+  width: 832px;
   height: 38px;
   line-height: 38px;
   font-family: Helvetica, Verdana, Arial, sans-serif;
