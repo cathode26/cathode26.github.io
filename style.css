@@ -254,4 +254,8 @@ h1 {
     text-align: center;
     top: 480px;
   }
+  
+  .text-wrapper h1 {
+    margin-top: 0px;
+  } 
 }
