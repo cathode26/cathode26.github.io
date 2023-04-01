@@ -85,9 +85,6 @@
 
   .webgl-container .webgl-content {
     width: 100%;
-    /*height: auto;*/
-    height: 468px;
-    max-width: 832px;
   }
 
   .webgl-container p {
