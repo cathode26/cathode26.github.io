@@ -47,17 +47,16 @@
 
 .webgl-container {
   display: grid;
-  grid-template-columns: 70% 30%;
+  grid-template-columns: 60% 40%;
   justify-items: center;
   align-items: flex-start; /* Change this line */
-  align-items: center;
   width: 100%;
   margin-top: 5%; 
 }
 
 .webgl-container-text {
   justify-self: center;
-  align-self: center;
+  align-self: flex-start; /* Updated */
 }
 
 .webgl-container p {
@@ -66,18 +65,28 @@
   margin-right: 20px;
 }
 
+.page4-text {
+  margin-top: 5%;
+}
+
 /* Responsive WebGL and text */
 @media (max-width: 1250px) {
+	
+  .webgl-content {
+    padding-top: 0; /* Override the padding-top property */
+  }
+  
   .webgl-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+	margin-top: 0; /* Override the margin-top property */
   }
 
   .webgl-container .webgl-content {
     width: 100%;
-    height: auto;
-    min-height: 468px;
+    /*height: auto;*/
+    height: 468px;
     max-width: 832px;
   }
 
@@ -89,11 +98,21 @@
     padding-right: 20px;
     text-align: center;
   }
+  
+  .webgl-container-text {
+	  text-align: center;
+	  margin-top: 20px;
+	  margin-left: 20px;
+      margin-right: 40px;
+	}
 
   .webgl-wrapper {
     display: flex;
     justify-content: center;
     margin-left: 0; /* Reset the margin-left property */
+  }
+  .page4-text {
+    margin-top: 0%;
   }
 }
 
