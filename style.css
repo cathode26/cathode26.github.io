@@ -227,6 +227,10 @@ h1 {
     justify-content: flex-start; /* Add this line */
   }
   
+  .intro-text-wrapper {
+	  width: 80%;
+	}
+  
   .video-container {
     display: flex;
     flex-direction: column;
@@ -235,6 +239,7 @@ h1 {
     height: auto;
     position: relative;
     margin-top: 0;
+	margin-bottom: 205;
   }
   
   .video-container iframe {
@@ -246,13 +251,13 @@ h1 {
   }
   
   .video-container .text-wrapper {
-    position: absolute;
+    position: relative;
     width: 100%;
     margin: 20px 0 0 0;
     padding-left: 20px;
     padding-right: 20px;
     text-align: center;
-    top: 480px;
+    margin-top: 20px; /* Add margin-top */
   }
   
   .text-wrapper h1 {
