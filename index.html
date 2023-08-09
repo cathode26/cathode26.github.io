@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>Main Page</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
-	<!-- Add the Unity WebGL player styles and scripts here -->
-	<link rel="shortcut icon" href="TemplateData/favicon.ico">
-	<link rel="stylesheet" href="TemplateData/style.css">
-	<script src="TemplateData/UnityProgress.js"></script>
-	<script src="Build/UnityLoader.js"></script>
-	<script>
-	let unityGameLoaded = false; // Add this line to create the unityGameLoaded flag
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Main Page
+  </title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+  <link href="style.css" rel="stylesheet" type="text/css"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css?family=Russo+One&amp;display=swap" rel="stylesheet"/>
+  <!-- Add the Unity WebGL player styles and scripts here -->
+  <link href="TemplateData/favicon.ico" rel="shortcut icon"/>
+  <link href="TemplateData/style.css" rel="stylesheet"/>
+  <script src="TemplateData/UnityProgress.js">
+  </script>
+  <script src="Build/UnityLoader.js">
+  </script>
+  <script>
+   let unityGameLoaded = false; // Add this line to create the unityGameLoaded flag
 	let unityInstance; // Declare unityInstance here
 	let interval;
 
 	window.onload = function() {
 	    unityInstance = UnityLoader.instantiate("unityContainer", "Build/3-28-23.json", {onProgress: UnityProgress});
-	};	
-	</script>
-	<!-- End of Unity WebGL player code -->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
-		$(document).ready(function() {
+	};
+  </script>
+  <!-- End of Unity WebGL player code -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js">
+  </script>
+  <script>
+   $(document).ready(function() {
 		  var images = [
 			["image1a.svg", "image1b.svg"],
 			["legends777a.png", "legends777b.png"],
@@ -225,157 +230,278 @@
 
 			window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 		});
-
-	</script>
-	<script src="https://www.youtube.com/iframe_api"></script>
-</head>
-<body>
-  <div class="top-blank"> </div>
+  </script>
+  <script src="https://www.youtube.com/iframe_api">
+  </script>
+ </head>
+ <body>
+  <div class="top-blank">
+  </div>
   <div class="content-wrapper">
-
-	<div class="main">
-		<div class="arrow left-arrow"> 
-			&larr; 
-				<div class="arrow-overlay"></div>
-		</div>
-		<div class="arrow right-arrow"> 
-			&rarr; 
-				<div class="arrow-overlay"></div>
-		</div>
-		<div class="ribbon-wrapper">
-			<div class="ribbon">
-			  <div>
-				<!-- Page 1 content -->
-				<div class="page-content">
-				  <h1>Game Developer</h1>
-				  <div class="intro-text-wrapper">
-				    <div class="intro-text">					
-					  <p>Hello, my name is <span class="highlight">Vincent J. Liguori</span>. I'm a skilled game developer and software engineer with over 10 years of experience in the industry. My expertise lies in Unity 3D, plugins, engine development, C#, C++, Lua and DirectX.</p>
-					  <p>Throughout my career, I've collaborated with numerous companies, developing engaging and immersive games. Working with teams of designers, artists, and programmers, I've managed to create top-quality games that exceed expectations. My strong problem-solving skills and ability to work under tight deadlines have consistently led to high-quality results. Furthermore, my extensive experience in developing serious game engines used for simulation-based training scenarios has broadened my skill set. This experience has allowed me to excel in delivering engaging, high-quality games across various genres.</p>
-					  <p>Having earned both a Bachelor's and Master's degree in Computer Science, I bring a strong foundation in programming and software development to my work. My diverse background spans a wide range of projects and technologies, equipping me with the skills needed to tackle any challenge in the game development field. As a versatile and committed professional, I look forward to contributing my knowledge and skills to any development team.</p>
-				    </div>
-			      </div>
-				  <div class="social-icons">
-					  <a href="https://www.linkedin.com/in/vincent-liguori-77329724/" target="_blank" class="icon-linkedin" title="linkedin">
-						<i class="fab fa-linkedin"></i>
-					  </a>
-					  <a href="https://github.com/cathode26" target="_blank" class="icon-github" title="github">
-						<i class="fab fa-github"></i>
-					  </a>
-					  <a href="mailto:vincent.j.liguori@outlook.com" class="icon-email" title="email">
-						<i class="fas fa-envelope"></i>
-					  </a>
-					  <a href="V-Liguori-resume-22JUNE23.pdf" class="icon-file" title="resume">
-						<i class="fas fa-file"></i>
-					  </a>
-					</div>
-				</div>
-			  </div>
-			  <div>
-				<!-- Page 2 content -->
-				<div class="page-content">
-				  <div class="video-container">
-					<iframe id="youtube-bestcasino" width="832" height="468" src="https://www.youtube.com/embed/-esJuFV-jWU?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-					<div class="text-wrapper">
-						<h1> Best Casino Legends Slot 777 </h1>
-						<p>
-							In my tenure at Dragon's Eye Productions, we crafted a sophisticated Unity 3D mobile slot machine framework, a powerful tool currently fueling the success of 'Best Casino Legends Slot 777,' a popular offering from Tangelo Games Ltd. This acclaimed game has already amassed over 100,000 downloads and holds a strong 4.3-star rating. Available for both iOS on the <a href="https://apps.apple.com/us/app/best-casino-legends-slots-game/id789690940">App Store</a> and Android on the <a href="https://play.google.com/store/apps/details?id=com.diwip.socialslots&hl=en_US&gl=US">Google Play Store</a>, it continues to entertain a growing audience. I'm particularly proud of several innovative features I contributed to the project, including the implementation of a UPM package for efficient version control, the creation of an API that empowers front-end developers to customize the slot environment, and the utilization of Addressables for streamlined content management. 
-						<p>
-					</div>
-				  </div>
-				</div>
-			  </div>
-			  
-			  <!-- Page 3 content -->
-			  <div>
-				<div class="page-content">
-				  <div class="video-container">
-					<iframe id="youtube-vmax" width="832" height="468" src="https://www.youtube.com/embed/zFnPBs_eQy0?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-					<div class="text-wrapper">
-					  <h1> VMAX Simulator </h1>
-					  <p>
-							At Forum Energy Technologies, we developed a cutting-edge tool for training ROV pilots and validating offshore equipment. I played a crucial role in developing and optimizing the 3D simulation engine, most notably by creating tools to streamline the art pipeline. Since cleaning up CAD models can be labor-intensive, I developed a tool that efficiently eliminates hidden and small geometry. This improvement dramatically reduced the labor needed to clean up and export models.
-					  </p>
-					</div>
-				  </div>
-			    </div>
-			  </div>
-			  <!-- Page 4 content -->
-			  <div>
-				<div class="page-content" style="height: 100%;">
-				  <div class="webgl-container">
-				    <div class="webgl-wrapper">
-					  <div class="centered" id="webgl-content">
-					    <!-- Add the Unity WebGL player container here -->
-					    <div class="webgl-content">
-						  <div id="unityContainer" style="width: 832px; height: 468px"></div>
-						  <div class="footer">
-						    <div class="webgl-logo"></div>
-						    <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
-						    <div class="title">My Little Pony</div>
-						  </div>
-					    </div>
-					  </div>
-					</div>
-					<!-- End of Unity WebGL player container -->
-					<div class="webgl-container-text page4-text">
-					  <h1>MLP Pony Up</h1>
-					  <p>
-						One of my personal projects is an unpublished demo of a mobile, idle, clicker game, for which I implemented all the programming. The features include parallax scrolling, an animation controller, sound, and input mechanisms. These elements together create a dynamic and immersive background and smooth gameplay experience.
-					  </p>
-					</div>
-				  </div>
-				</div>
-			  </div>
-			  <div>
-				<!-- Page 5 content -->
-				<div class="page-content">
-				  <div class="video-container">
-					<iframe id="youtube-starcluck" width="832" height="468" src="https://www.youtube.com/embed/aiFt6kaaomU?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-					<div class="text-wrapper">
-					  <h1>Star Cluck.</h1>
-					  <p>
-						During my graduate studies in 2009, I worked on a project named 'Star Cluck,', a 3D rail shooter game inspired by Star Fox. The game was developed using C++, DirectX 9, Visual Studio, and the Simple Academic Game Engine (SAGE). As part of the project, I made several contributions that helped enhance the overall gameplay experience such as level scripting, infinite terrain with terrain wrapping, spatial partitioning, triggers, and collision detection with oriented bounding boxes. To ensure that the player's plane stayed within the game boundaries, I implemented a flight path that relied on collision with spatial partitions. Finally, I created a camera tether with tolerance to provide a smooth and responsive player experience. Overall, my contributions to the Star Cluck project helped to create an enjoyable and engaging gaming experience for players.
-					  </p>
-					</div>
-			      </div>
-				</div>
-			  </div>
-			  <div>
-				<!-- Page 6 content -->
-				<div class="page-content">
-				  <div class="video-container">
-					<iframe id="youtube-furymallard" width="832" height="468" src="https://www.youtube.com/embed/aBHRRuYBLr8?enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-					<div class="text-wrapper">
-					  <h1>Fury Mallard.</h1>
-					  <p>
-						During my undergraduate studies in 2008, I worked on a game demo called 'Fury Mallard', a third-person shooter game. The game was developed using C++, DirectX 9, Visual Studio, and the Simple Academic Game Engine (SAGE). My primary responsibilities included crafting the artificial intelligence for the characters and aircraft, a feature that significantly contributed to the immersive and dynamic nature of the game.
-					  </p>
-					</div>
-			      </div>
-				</div>
-			  </div>
-			</div>
-		</div>
-		<div class="bottom-image-slider">
-
-			<div class="image-slider">
-			  <img src="image1b.svg">
-			  <img src="legends777a.png">
-			  <img src="vmaxa.png">
-			  <img src="mlpa.png">
-			  <img src="image5a.png">
-			  <img src="furymallarda.png">
-			  <!-- Add all your image sources here -->
-			</div>
-			
-		</div>
+   <div class="main">
+    <div class="arrow left-arrow">
+     ←
+     <div class="arrow-overlay">
+     </div>
     </div>
+    <div class="arrow right-arrow">
+     →
+     <div class="arrow-overlay">
+     </div>
+    </div>
+    <div class="ribbon-wrapper">
+     <div class="ribbon">
+      <div>
+       <!-- Page 1 content -->
+       <div class="page-content">
+        <h1>
+         Game Developer
+        </h1>
+        <div class="intro-text-wrapper">
+         <div class="intro-text">
+          <p>
+           Hello, my name is
+           <span class="highlight">
+            Vincent J. Liguori
+           </span>
+           . I'm a skilled game developer and software engineer with over 10 years of experience in the industry. My expertise lies in Unity 3D, plugins, engine development, C#, C++, Lua and DirectX.
+          </p>
+          <p>
+           Throughout my career, I've collaborated with numerous companies, developing engaging and immersive games. Working with teams of designers, artists, and programmers, I've managed to create top-quality games that exceed expectations. My strong problem-solving skills and ability to work under tight deadlines have consistently led to high-quality results. Furthermore, my extensive experience in developing serious game engines used for simulation-based training scenarios has broadened my skill set. This experience has allowed me to excel in delivering engaging, high-quality games across various genres.
+          </p>
+          <p>
+           Having earned both a Bachelor's and Master's degree in Computer Science, I bring a strong foundation in programming and software development to my work. My diverse background spans a wide range of projects and technologies, equipping me with the skills needed to tackle any challenge in the game development field. As a versatile and committed professional, I look forward to contributing my knowledge and skills to any development team.
+          </p>
+          <div class="summary">
+           <div class="summary-columns">
+            <div class="summary-section">
+             <h4> Game Architecture and Design Patterns: </h4>
+             <ul> 
+			  <li> Modular and reusable architecture </li>
+              <li> Dynamic game generation </li>
+              <li> State management using events </li>
+              <li> Implementation of robust systems for scalability </li>
+             </ul>
+            </div>
+			<div class="summary-section">
+             <h4> User Interface (UI) Development: </h4>
+             <ul>
+              <li> Experience with Unity's legacy Canvas system </li>
+              <li> Familiarity with Unity's new UI Toolkit </li>
+              <li> Dynamic UI generation and customization </li>
+              <li> Responsive design for different screen sizes </li>
+             </ul>
+            </div>
+            <div class="summary-section">
+             <h4> Asset Management: </h4>
+             <ul>
+              <li> Utilization of Unity's Addressables system </li>
+              <li> Dynamic loading and unloading of assets </li>
+              <li> Efficient use of resources and optimization </li>
+             </ul>
+            </div>
+            <div class="summary-section">
+             <h4> Animation and Visual Effects: </h4>
+             <ul>
+              <li> Integration of Spine animations </li>
+              <li> 2D animation walk cycles </li>
+              <li> Immersive visual effects and transitions </li>
+             </ul>
+            </div>
+            <div class="summary-section">
+             <h4> Localization and Serialization: </h4>
+             <ul>
+              <li> Implementation of Localization API for string and sprite localization </li>
+              <li> Serialization and deserialization of JSON data </li>
+             </ul>
+            </div>
+            <div class="summary-section">
+             <h4> Audio Management: </h4>
+             <ul>
+              <li> Utilization of Unity's audio mixer system </li>
+              <li> Managing game music and sounds with separate audio streams </li>
+             </ul>
+            </div>
+            <div class="summary-section">
+             <h4> Performance Optimization: </h4>
+             <ul>
+              <li> Performance analysis and optimization techniques </li>
+              <li> Multithreading and efficient use of resources </li>
+              <li> Optimization of rendering and asset loading </li>
+             </ul>
+            </div>
+            <div class="summary-section">
+             <h4> Tool and Package Creation: </h4>
+             <ul>
+              <li> Creation of custom tools for development </li>
+              <li> Package management through NPM and private Git URLs </li>
+             </ul>
+            </div>
+            <div class="summary-section">
+             <h4> Cloud Hosting and Integration: </h4>
+             <ul>
+              <li> Setup of Unity project with AWS for cloud-hosted addressables through Amazon S3 </li>
+             </ul>
+            </div>
+            <div class="summary-section">
+             <h4> Scriptable Objects: </h4>
+             <ul>
+              <li> Experience in using Scriptable Objects for efficient data management </li>
+             </ul>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="social-icons">
+         <a class="icon-linkedin" href="https://www.linkedin.com/in/vincent-liguori-77329724/" target="_blank" title="linkedin">
+          <i class="fab fa-linkedin">
+          </i>
+         </a>
+         <a class="icon-github" href="https://github.com/cathode26" target="_blank" title="github">
+          <i class="fab fa-github">
+          </i>
+         </a>
+         <a class="icon-email" href="mailto:vincent.j.liguori@outlook.com" title="email">
+          <i class="fas fa-envelope">
+          </i>
+         </a>
+         <a class="icon-file" href="V-Liguori-resume-22JUNE23.pdf" title="resume">
+          <i class="fas fa-file">
+          </i>
+         </a>
+        </div>
+       </div>
+      </div>
+      <div>
+       <!-- Page 2 content -->
+       <div class="page-content">
+        <div class="video-container">
+         <iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" height="468" id="youtube-bestcasino" src="https://www.youtube.com/embed/-esJuFV-jWU?enablejsapi=1" width="832">
+         </iframe>
+         <div class="text-wrapper">
+          <h1>
+           Best Casino Legends Slot 777
+          </h1>
+          <p>
+           In my tenure at Dragon's Eye Productions, we crafted a sophisticated Unity 3D mobile slot machine framework, a powerful tool currently fueling the success of 'Best Casino Legends Slot 777,' a popular offering from Tangelo Games Ltd. This acclaimed game has already amassed over 100,000 downloads and holds a strong 4.3-star rating. Available for both iOS on the
+           <a href="https://apps.apple.com/us/app/best-casino-legends-slots-game/id789690940">
+            App Store
+           </a>
+           and Android on the
+           <a href="https://play.google.com/store/apps/details?id=com.diwip.socialslots&amp;hl=en_US&amp;gl=US">
+            Google Play Store
+           </a>
+           , it continues to entertain a growing audience. I'm particularly proud of several innovative features I contributed to the project, including the implementation of a UPM package for efficient version control, the creation of an API that empowers front-end developers to customize the slot environment, and the utilization of Addressables for streamlined content management.
+           <p>
+           </p>
+          </p>
+         </div>
+        </div>
+       </div>
+      </div>
+      <!-- Page 3 content -->
+      <div>
+       <div class="page-content">
+        <div class="video-container">
+         <iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" height="468" id="youtube-vmax" src="https://www.youtube.com/embed/zFnPBs_eQy0?enablejsapi=1" width="832">
+         </iframe>
+         <div class="text-wrapper">
+          <h1>
+           VMAX Simulator
+          </h1>
+          <p>
+           At Forum Energy Technologies, we developed a cutting-edge tool for training ROV pilots and validating offshore equipment. I played a crucial role in developing and optimizing the 3D simulation engine, most notably by creating tools to streamline the art pipeline. Since cleaning up CAD models can be labor-intensive, I developed a tool that efficiently eliminates hidden and small geometry. This improvement dramatically reduced the labor needed to clean up and export models.
+          </p>
+         </div>
+        </div>
+       </div>
+      </div>
+      <!-- Page 4 content -->
+      <div>
+       <div class="page-content" style="height: 100%;">
+        <div class="webgl-container">
+         <div class="webgl-wrapper">
+          <div class="centered" id="webgl-content">
+           <!-- Add the Unity WebGL player container here -->
+           <div class="webgl-content">
+            <div id="unityContainer" style="width: 832px; height: 468px">
+            </div>
+            <div class="footer">
+             <div class="webgl-logo">
+             </div>
+             <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)">
+             </div>
+             <div class="title">
+              My Little Pony
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+         <!-- End of Unity WebGL player container -->
+         <div class="webgl-container-text page4-text">
+          <h1>
+           MLP Pony Up
+          </h1>
+          <p>
+           One of my personal projects is an unpublished demo of a mobile, idle, clicker game, for which I implemented all the programming. The features include parallax scrolling, an animation controller, sound, and input mechanisms. These elements together create a dynamic and immersive background and smooth gameplay experience.
+          </p>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div>
+       <!-- Page 5 content -->
+       <div class="page-content">
+        <div class="video-container">
+         <iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" height="468" id="youtube-starcluck" src="https://www.youtube.com/embed/aiFt6kaaomU?enablejsapi=1" width="832">
+         </iframe>
+         <div class="text-wrapper">
+          <h1>
+           Star Cluck.
+          </h1>
+          <p>
+           During my graduate studies in 2009, I worked on a project named 'Star Cluck,', a 3D rail shooter game inspired by Star Fox. The game was developed using C++, DirectX 9, Visual Studio, and the Simple Academic Game Engine (SAGE). As part of the project, I made several contributions that helped enhance the overall gameplay experience such as level scripting, infinite terrain with terrain wrapping, spatial partitioning, triggers, and collision detection with oriented bounding boxes. To ensure that the player's plane stayed within the game boundaries, I implemented a flight path that relied on collision with spatial partitions. Finally, I created a camera tether with tolerance to provide a smooth and responsive player experience. Overall, my contributions to the Star Cluck project helped to create an enjoyable and engaging gaming experience for players.
+          </p>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div>
+       <!-- Page 6 content -->
+       <div class="page-content">
+        <div class="video-container">
+         <iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" height="468" id="youtube-furymallard" src="https://www.youtube.com/embed/aBHRRuYBLr8?enablejsapi=1" width="832">
+         </iframe>
+         <div class="text-wrapper">
+          <h1>
+           Fury Mallard.
+          </h1>
+          <p>
+           During my undergraduate studies in 2008, I worked on a game demo called 'Fury Mallard', a third-person shooter game. The game was developed using C++, DirectX 9, Visual Studio, and the Simple Academic Game Engine (SAGE). My primary responsibilities included crafting the artificial intelligence for the characters and aircraft, a feature that significantly contributed to the immersive and dynamic nature of the game.
+          </p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="bottom-image-slider">
+     <div class="image-slider">
+      <img src="image1b.svg"/>
+      <img src="legends777a.png"/>
+      <img src="vmaxa.png"/>
+      <img src="mlpa.png"/>
+      <img src="image5a.png"/>
+      <img src="furymallarda.png"/>
+      <!-- Add all your image sources here -->
+     </div>
+    </div>
+   </div>
   </div>
-
   <div class="footer">
-    <!-- Add your footer content here -->
+   <!-- Add your footer content here -->
   </div>
-</body>
+ </body>
 </html>
-
