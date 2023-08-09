@@ -96,6 +96,13 @@
     text-align: center;
   }
   
+  .webgl-container-text p {
+	  display: block;
+	  margin: 20px auto; /* Centers the block element and adds 20px margin to the top and bottom */
+	  width: calc(90%); /* Adjusting width */
+	  text-align: center; /* Center-aligns the text within the block */
+	}
+
   .webgl-container-text {
 	  text-align: center;
 	  margin-top: 20px;
