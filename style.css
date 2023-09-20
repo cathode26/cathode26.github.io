@@ -192,20 +192,15 @@ h1 {
 }
 
 .video-container {
-  opacity: 1;
-  margin-top: 5%;
-  align-items: flex-start;
+    opacity: 1;
+    display: grid;
+    grid-template-columns: 60% 40%;
+    align-items: center; /* Centering the grid items vertically */
+    width: 100%;
+    height: auto;
+    position: relative;
 }
 
-.video-container {
-  opacity: 1;
-  margin-top: 5%;
-  display: grid;
-  grid-template-columns: 60% 40%;
-  justify-items: center;
-  align-items: flex-start; /* Update this line */
-  width: 100%;
-}
 
 .video-container video,
 .video-container iframe {
@@ -243,7 +238,7 @@ h1 {
     height: auto;
     position: relative;
     margin-top: 0;
-	margin-bottom: 205;
+	margin-bottom: 205px;
   }
   
   .video-container iframe {

@@ -46,17 +46,18 @@
 }
 
 .webgl-container {
-  display: grid;
-  grid-template-columns: 60% 40%;
-  justify-items: center;
-  align-items: flex-start; /* Change this line */
-  width: 100%;
-  margin-top: 5%; 
+    opacity: 1;
+    display: grid;
+    grid-template-columns: 60% 40%;
+    align-items: center; /* Centering the grid items vertically */
+    width: 100%;
+    height: auto;
+    position: relative;
 }
 
 .webgl-container-text {
-  justify-self: center;
-  align-self: flex-start; /* Updated */
+  flex: 1;
+  padding: 0 20px;
 }
 
 .webgl-container p {
