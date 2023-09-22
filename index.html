@@ -168,6 +168,7 @@
 							if (progress === 1) {
 								console.log(`${gameName} Loading finished`);
 								gameData.loaded = true;
+								gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
 							}
 						}
 					});
@@ -209,6 +210,7 @@
 					}).then((unityInstance) => {
 						gameData.instance = unityInstance;
 						gameData.loaded = true;
+						gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
 					}).catch((message) => {
 						console.error(`Error loading ${gameName}:`, message);
 					});
@@ -247,7 +249,7 @@
 						if (!unityGameData.instance && !unityGameData.loaded) {
 							// Load the game using the mapped load function
 							unityGameData.loadFunction();
-						} else if (unityGameData.instance) {
+						} else if (unityGameData.instance && unityGameData.loaded) {
 							unityGameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
 							console.log(`turning ShowPlayer on for ${webglID}`);
 						} else {
