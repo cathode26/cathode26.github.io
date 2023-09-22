@@ -136,7 +136,7 @@ h1 {
   display: flex;
   overflow-x: hidden;
   height: 100%;
-  width: 600vw; /* Updated */
+  width: 700vw; /* Updated */
   transition: transform 0.5s ease-in-out;
 }
 
@@ -218,7 +218,7 @@ h1 {
 
 .text-wrapper {
   flex: 1;
-  padding: 0 20px;
+  padding: 0 50px;
 }
 
 @media (max-width: 1250px) {

@@ -10,19 +10,44 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css?family=Russo+One&amp;display=swap" rel="stylesheet"/>
   <!-- Add the Unity WebGL player styles and scripts here -->
+  
   <link href="TemplateData/favicon.ico" rel="shortcut icon"/>
   <link href="TemplateData/style.css" rel="stylesheet"/>
-  <script src="TemplateData/UnityProgress.js">
-  </script>
-  <script src="Build/UnityLoader.js">
-  </script>
+  <script src="TemplateData/UnityProgress.js"> </script>
+  <script src="Build/UnityLoader.js"> </script>
+  
   <script>
-   let unityGameLoaded = false; // Add this line to create the unityGameLoaded flag
 	let unityInstance; // Declare unityInstance here
 	let interval;
 
+	const UNITY_GAMES = {
+		"SpaceInvaders": {
+			instance: null,
+			loaded: false,
+			loadFunction: null,
+			//Need a direct reference to a DOM element
+			//Use document.querySelector with the # prefix in the selector to select by ID.
+			canvasSelector: "#unityContainerSpaceInvaders",
+			streamingAssetsUrl: "SpaceInvaders/StreamingAssets",
+			companyName: "DefaultCompany",
+			productName: "SpaceInvaders",
+			productVersion: "0.1",
+			buildUrl: "SpaceInvaders/Build"
+		},
+		"MyLittlePony": {
+			instance: null,
+			loaded: false,
+			loadFunction: null,
+			canvasSelector: "unityContainerMyLittlePony",
+			buildJson: "Build/3-28-23.json"
+		}
+	};
+
+	document.addEventListener("DOMContentLoaded", function() {
+       
+    });
 	window.onload = function() {
-	    unityInstance = UnityLoader.instantiate("unityContainer", "Build/3-28-23.json", {onProgress: UnityProgress});
+	    
 	};
   </script>
   <!-- End of Unity WebGL player code -->
@@ -34,6 +59,7 @@
 			["image1a.svg", "image1b.svg"],
 			["legends777a.png", "legends777b.png"],
 			["vmaxa.png", "vmaxb.png"],
+			["image7a.png", "image7b.png"],
 			["mlpa.png", "mlpb.png"],
 			["image5a.png", "image5b.png"],
 			["furymallarda.png", "furymallardb.png"]
@@ -47,6 +73,7 @@
 		  $('.image-slider img:eq(3)').attr('src', images[3][0]);
 		  $('.image-slider img:eq(4)').attr('src', images[4][0]);
 		  $('.image-slider img:eq(5)').attr('src', images[5][0]);
+		  $('.image-slider img:eq(6)').attr('src', images[6][0]);
 			
 		  $('.image-slider img').on('mouseenter', function() {
 			var index = $(this).index();
@@ -62,92 +89,213 @@
 			}
 		  });
 
+			function getWebGLIdForPageIndex(index) {
+				const currentPage = document.querySelector(`.ribbon > div:nth-child(${index + 1}) > .page-content`);
+				console.log("Parent for Index", index, ":", currentPage.parentElement);
+				console.log("Selected Element:", currentPage);
+				if (currentPage) {
+					return currentPage.getAttribute('data-webgl-id');
+				}
+				return null;
+			}
+
 			function switchPage(index) {
-			  if (index === -1) {
-				return;
-			  }
-			  pauseVideos(); // Add this line to pause the videos
-			  toggleTransition(true);
-			  var newPosition = (-1 * index * 100) + "vw";
-			  $(".ribbon").css("transform", "translateX(" + newPosition + ")");
+				if (index === -1) {
+					return;
+				}
+				pauseVideos();
+				toggleTransition(true);
 
-			  // Call ribbonTransitionEnd() if the previous active index was 3 (page 4)
-			  if (activeIndex === 3 && index !== 3) {
-				ribbonTransitionEnd(activeIndex); // Pass the previous active index
-			  }
+				const newPosition = (-1 * index * 100) + "vw";
+				$(".ribbon").css("transform", "translateX(" + newPosition + ")");
 
-			  var previousIndex = activeIndex; // Store the current activeIndex as previousIndex
+				const previousPageWebGLID = getWebGLIdForPageIndex(activeIndex);
 
-			  if (activeIndex !== -1) {
-				$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
-			  }
-			  $(".image-slider img:eq(" + index + ")").attr("src", images[index][1]);
-			  activeIndex = index;
-			  updatePageVisibility(activeIndex, previousIndex); // Pass previousIndex as an argument
+				// If navigating away from a WebGL page and not navigating to another WebGL page, call ribbonTransitionEnd
+				if (previousPageWebGLID) {
+					console.log("ribbonTransitionEnd activeIndex index. " + activeIndex + " " + index);
+					ribbonTransitionEnd(activeIndex);
+				}
+
+				const previousIndex = activeIndex;
+				if (activeIndex !== -1) {
+					$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
+				}
+				$(".image-slider img:eq(" + index + ")").attr("src", images[index][1]);
+				activeIndex = index;
+				updatePageVisibility(activeIndex, previousIndex);
 			}
 
 			function callLoadLevelWhenReady(index) {
-			  if (unityGameLoaded === true && index === 3) {
-			    console.log("callLoadLevelWhenReady turning ShowPlayer on");
-				unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
-				clearInterval(interval);
-			  }
-			  else if(index !== 3)
-			  {
-				clearInterval(interval);
-			  }
+				const webglId = getWebGLIdForPageIndex(index);
+				const gameData = UNITY_GAMES[webglId];
+
+				console.log("Target WebGL ID:", webglId);
+				
+				if(webglId && gameData.loaded && gameData.instance)
+				{
+					console.log(webglId + " turning ShowPlayer on");
+					gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
+					clearInterval(interval);
+				} 
+				else if (!webglId) 
+				{
+					clearInterval(interval);
+				}
 			}
 
-			function updatePageVisibility(index, previousIndex) {
-			  // Hide or show the webgl-content div depending on the current page
-			  const webglContent = document.getElementById('webgl-content');
-
-			  // Remove any previous transitionend event listeners
-			  $('.ribbon').off('transitionend');
-
-			  if (index === 3) { // Since index starts from 0, the 4th page will have an index of 3
-				webglContent.style.visibility = 'visible';
-				console.log("show webglvideo");
-				// Add the following line to start the Unity WebGL player
-				if (typeof unityInstance !== 'undefined' && unityInstance !== null && unityGameLoaded === true) {
-				  unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
-				  console.log("turning ShowPlayer on");
+			function getPageAtIndex(index) {
+				const allDivs = document.querySelectorAll('.ribbon > div > div');
+				const pageContents = Array.from(allDivs).filter(div => div.classList.contains('page-content'));
+				return pageContents[index];
+			}			
+			
+			function loadMyLittlePonyGame() {
+				const gameName = "MyLittlePony";
+				const gameData = UNITY_GAMES[gameName];
+				
+				if (!gameData) {
+					console.error(`No game data found for: ${gameName}`);
+					return;
 				}
-				else if(unityGameLoaded === false)
-				{
-				    interval = setInterval(function() {
-				     callLoadLevelWhenReady(index);
-				   }, 500); // Check every 1000 milliseconds (1 second)
+
+				console.log(`Preparing to instantiate ${gameData.canvasSelector}`);
+				setTimeout(function() {
+					console.log(`Instantiating ${gameData.canvasSelector}`);
+					gameData.instance = UnityLoader.instantiate(gameData.canvasSelector, gameData.buildJson, {
+						onProgress: function(unityInstance, progress) {
+							console.log("Loading progress:", progress);
+							if (progress === 1) {
+								console.log(`${gameName} Loading finished`);
+								gameData.loaded = true;
+							}
+						}
+					});
+				}, 500); // 0.5 second delay
+			}
+
+			
+			function loadSpaceInvadersGame() {
+				const gameName = "SpaceInvaders";
+				const gameData = UNITY_GAMES[gameName];
+				
+				if (!gameData) {
+					console.error(`No game data found for: ${gameName}`);
+					return;
 				}
-			  } 
-			  else 
-			  {
+				
+				const buildUrl = gameData.buildUrl;
+				const canvasElement = document.querySelector(gameData.canvasSelector);
+
+				// Configuration for Unity
+				const config = {
+					dataUrl: buildUrl + `/${gameName}.data`,
+					frameworkUrl: buildUrl + `/${gameName}.framework.js`,
+					codeUrl: buildUrl + `/${gameName}.wasm`,
+					streamingAssetsUrl: gameData.streamingAssetsUrl,
+					companyName: gameData.companyName,
+					productName: gameName,
+					productVersion: gameData.productVersion
+					// Add any other configurations if needed
+				};
+
+				// Load Unity
+				const loaderUrl = buildUrl + `/${gameName}.loader.js`;
+				const script = document.createElement("script");
+				script.src = loaderUrl;
+				script.onload = () => {
+					createUnityInstance(canvasElement, config, (progress) => {
+						console.log("Loading progress:", progress);
+					}).then((unityInstance) => {
+						gameData.instance = unityInstance;
+						gameData.loaded = true;
+					}).catch((message) => {
+						console.error(`Error loading ${gameName}:`, message);
+					});
+				};
+				document.body.appendChild(script);
+			}
+		
+			UNITY_GAMES["SpaceInvaders"].loadFunction = loadSpaceInvadersGame;
+			UNITY_GAMES["MyLittlePony"].loadFunction = loadMyLittlePonyGame;
+
+			function updatePageVisibility(index, previousIndex) 
+			{
+				const currentPage = getPageAtIndex(index);
+
+				if (!currentPage) {
+					console.error(`Page not found for index: ${index}`);
+					return;
+				}
+
+				const webglID = currentPage ? currentPage.getAttribute('data-webgl-id') : null;
+
+				// Remove any previous transitionend event listeners
+				$('.ribbon').off('transitionend');
+
+				if (webglID) {
+					const webglContent = currentPage.querySelector('.webgl-content');
+					if (webglContent) {
+						console.log("show webglvideo " + webglContent);
+						webglContent.style.visibility = 'visible';
+					} else {
+						console.error(`No element found with ID: ${webglID}`);
+					}
+
+					const unityGameData = UNITY_GAMES[webglID];
+					if (unityGameData) {
+						if (!unityGameData.instance && !unityGameData.loaded) {
+							// Load the game using the mapped load function
+							unityGameData.loadFunction();
+						} else if (unityGameData.instance) {
+							unityGameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
+							console.log(`turning ShowPlayer on for ${webglID}`);
+						} else {
+							interval = setInterval(function() {
+								callLoadLevelWhenReady(index);
+							}, 500); // Check every 500 milliseconds (0.5 second)
+						}
+					} else {
+						console.error(`No game data found for: ${webglID}`);
+					}
+				}
+
 				// Call ribbonTransitionEnd after the transition duration (in milliseconds)
 				setTimeout(function() {
-				  ribbonTransitionEnd(previousIndex);
+					console.log("ribbonTransitionEnd previousIndex " + previousIndex);
+					ribbonTransitionEnd(previousIndex);
 				}, 500); // The duration of the transition in milliseconds
 				console.log("added setTimeout for ribbonTransitionEnd");
-			  }
 			}
+
 
 			function ribbonTransitionEnd(previousIndex) {
-			  // This function will be called when the transition ends
-			  const webglContent = document.getElementById('webgl-content');
-			  console.log("activeIndex " + activeIndex);
-			  console.log("previousIndex " + previousIndex);
-			  if (activeIndex !== 3 && previousIndex === 3) {
-				webglContent.style.visibility = 'hidden';
-				console.log("hide webglvideo");
-				// Add the following line to stop the Unity WebGL player
-				if (typeof unityInstance !== 'undefined' && unityInstance !== null) {
-				  unityInstance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'false');
-				  console.log("turning ShowPlayer off");
-				}       
-			  }
+				const webglId = getWebGLIdForPageIndex(previousIndex);
+				const gameData = UNITY_GAMES[webglId];
 
-			  // Remove the event listener to prevent multiple calls
-			  $('.ribbon').off('transitionend');
+				console.log("outside activeIndex " + activeIndex);
+				console.log("outside previousIndex " + previousIndex);
+
+				if (gameData) {
+					const previousPage = document.querySelector(`.ribbon > div:nth-child(${previousIndex + 1}) > .page-content[data-webgl-id="${webglId}"]`);
+					const activePage = document.querySelector(`.ribbon > div:nth-child(${activeIndex + 1}) > .page-content[data-webgl-id="${webglId}"]`);
+
+					if (previousPage && activePage !== previousPage) {
+						const webglContent = previousPage.querySelector('.webgl-content');
+						console.log("webglContent " + webglContent);
+
+						if (webglContent && gameData.instance) {
+							webglContent.style.visibility = 'hidden';
+							gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'false');
+							console.log(`Turning ShowPlayer off for ${webglId}`);
+						}
+					}
+				}
+
+				// Remove the event listener to prevent multiple calls
+				$('.ribbon').off('transitionend');
 			}
+
 
 		  $('.image-slider img').on('click', function() {
 			var index = $(this).index();
@@ -417,24 +565,48 @@
         </div>
        </div>
       </div>
-      <!-- Page 4 content -->
+	  <!-- Page 4 content -->
       <div>
-       <div class="page-content" style="height: 100%;">
+       <div class="page-content" data-webgl-id="SpaceInvaders" style="height: 100%;">
         <div class="webgl-container">
          <div class="webgl-wrapper">
           <div class="centered" id="webgl-content">
            <!-- Add the Unity WebGL player container here -->
            <div class="webgl-content">
-            <div id="unityContainer" style="width: 832px; height: 468px">
+			  <canvas id="unityContainerSpaceInvaders" style="width: 832px; height: 468px;"></canvas>
+              <div class="footer">
+                <div class="webgl-logo"> </div>
+                <div class="fullscreen" onclick="unityInstanceSpaceInvaders.SetFullscreen(1)"> </div>
+                <div class="title"> Space Invaders </div>
+              </div>
             </div>
+           </div>
+		  </div>
+          <!-- End of Unity WebGL player container -->
+          <div class="webgl-container-text page4-text">
+           <h1>
+            Space Invaders
+           </h1>
+           <p>
+            One of my personal projects is an unpublished demo of a mobile, idle, clicker game, for which I implemented  all the programming.  Space Invaders
+           </p>
+          </div>
+		 </div>
+        </div>
+       </div>
+      <!-- Page 5 content -->
+      <div>
+       <div class="page-content" data-webgl-id="MyLittlePony" style="height: 100%;">
+        <div class="webgl-container">
+         <div class="webgl-wrapper">
+          <div class="centered" id="webgl-content">
+           <!-- Add the Unity WebGL player container here -->
+           <div class="webgl-content">
+            <div id="unityContainerMyLittlePony" style="width: 832px; height: 468px"></div>
             <div class="footer">
-             <div class="webgl-logo">
-             </div>
-             <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)">
-             </div>
-             <div class="title">
-              My Little Pony
-             </div>
+             <div class="webgl-logo"> </div>
+             <div class="fullscreen" onclick="unityInstanceMyLittlePony.SetFullscreen(1)"> </div>
+             <div class="title"> My Little Pony </div>
             </div>
            </div>
           </div>
@@ -451,8 +623,8 @@
         </div>
        </div>
       </div>
-      <div>
-       <!-- Page 5 content -->
+       <!-- Page 6 content -->
+	   <div>
        <div class="page-content">
         <div class="video-container">
          <iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" height="468" id="youtube-starcluck" src="https://www.youtube.com/embed/aiFt6kaaomU?enablejsapi=1" width="832">
@@ -468,8 +640,8 @@
         </div>
        </div>
       </div>
-      <div>
-       <!-- Page 6 content -->
+       <!-- Page 7 content -->
+	   <div>
        <div class="page-content">
         <div class="video-container">
          <iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" height="468" id="youtube-furymallard" src="https://www.youtube.com/embed/aBHRRuYBLr8?enablejsapi=1" width="832">
@@ -492,7 +664,8 @@
       <img src="image1b.svg"/>
       <img src="legends777a.png"/>
       <img src="vmaxa.png"/>
-      <img src="mlpa.png"/>
+      <img src="image7a.png"/>
+	  <img src="mlpa.png"/>
       <img src="image5a.png"/>
       <img src="furymallarda.png"/>
       <!-- Add all your image sources here -->
