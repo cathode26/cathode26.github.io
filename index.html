@@ -11,10 +11,10 @@
   <link href="https://fonts.googleapis.com/css?family=Russo+One&amp;display=swap" rel="stylesheet"/>
   <!-- Add the Unity WebGL player styles and scripts here -->
   
-  <link href="TemplateData/favicon.ico" rel="shortcut icon"/>
-  <link href="TemplateData/style.css" rel="stylesheet"/>
-  <script src="TemplateData/UnityProgress.js"> </script>
-  <script src="Build/UnityLoader.js"> </script>
+  <link href="MyLittlePony/TemplateData/favicon.ico" rel="shortcut icon"/>
+  <link href="MyLittlePony/TemplateData/style.css" rel="stylesheet"/>
+  <script src="MyLittlePony/TemplateData/UnityProgress.js"> </script>
+  <script src="MyLittlePony/Build/UnityLoader.js"> </script>
   
   <script>
 	let unityInstance; // Declare unityInstance here
@@ -39,7 +39,7 @@
 			loaded: false,
 			loadFunction: null,
 			canvasSelector: "unityContainerMyLittlePony",
-			buildJson: "Build/3-28-23.json"
+			buildJson: "MyLittlePony/Build/3-28-23.json"
 		}
 	};
 
@@ -55,6 +55,7 @@
   </script>
   <script>
    $(document).ready(function() {
+		  var iPath = "Images/";
 		  var images = [
 			["image1a.svg", "image1b.svg"],
 			["legends777a.png", "legends777b.png"],
@@ -67,25 +68,25 @@
 		  ];
 		  var activeIndex = 0;
 
-		  $('.image-slider img:eq(0)').attr('src', images[0][1]);
-		  $('.image-slider img:eq(1)').attr('src', images[1][0]);
-		  $('.image-slider img:eq(2)').attr('src', images[2][0]);
-		  $('.image-slider img:eq(3)').attr('src', images[3][0]);
-		  $('.image-slider img:eq(4)').attr('src', images[4][0]);
-		  $('.image-slider img:eq(5)').attr('src', images[5][0]);
-		  $('.image-slider img:eq(6)').attr('src', images[6][0]);
+		  $('.image-slider img:eq(0)').attr('src', iPath + images[0][1]);
+		  $('.image-slider img:eq(1)').attr('src', iPath + images[1][0]);
+		  $('.image-slider img:eq(2)').attr('src', iPath + images[2][0]);
+		  $('.image-slider img:eq(3)').attr('src', iPath + images[3][0]);
+		  $('.image-slider img:eq(4)').attr('src', iPath + images[4][0]);
+		  $('.image-slider img:eq(5)').attr('src', iPath + images[5][0]);
+		  $('.image-slider img:eq(6)').attr('src', iPath + images[6][0]);
 			
 		  $('.image-slider img').on('mouseenter', function() {
 			var index = $(this).index();
 			if (index != activeIndex) {
-			  $(this).attr('src', images[index][1]);
+			  $(this).attr('src', iPath + images[index][1]);
 			}
 		  });
 
 		  $('.image-slider img').on('mouseleave', function() {
 			var index = $(this).index();
 			if (index != activeIndex) {
-			  $(this).attr('src', images[index][0]);
+			  $(this).attr('src', iPath + images[index][0]);
 			}
 		  });
 
@@ -119,9 +120,9 @@
 
 				const previousIndex = activeIndex;
 				if (activeIndex !== -1) {
-					$(".image-slider img:eq(" + activeIndex + ")").attr("src", images[activeIndex][0]);
+					$(".image-slider img:eq(" + activeIndex + ")").attr("src", iPath + images[activeIndex][0]);
 				}
-				$(".image-slider img:eq(" + index + ")").attr("src", images[index][1]);
+				$(".image-slider img:eq(" + index + ")").attr("src", iPath + images[index][1]);
 				activeIndex = index;
 				updatePageVisibility(activeIndex, previousIndex);
 			}
@@ -663,13 +664,13 @@
     </div>
     <div class="bottom-image-slider">
      <div class="image-slider">
-      <img src="image1b.svg"/>
-      <img src="legends777a.png"/>
-      <img src="vmaxa.png"/>
-      <img src="image7a.png"/>
-	  <img src="mlpa.png"/>
-      <img src="image5a.png"/>
-      <img src="furymallarda.png"/>
+      <img src= iPath + "image1b.svg"/>
+      <img src= iPath + "legends777a.png"/>
+      <img src= iPath + "vmaxa.png"/>
+      <img src= iPath + "image7a.png"/>
+	  <img src= iPath + "mlpa.png"/>
+      <img src= iPath + "image5a.png"/>
+      <img src= iPath + "furymallarda.png"/>
       <!-- Add all your image sources here -->
      </div>
     </div>
