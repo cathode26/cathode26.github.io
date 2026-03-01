@@ -9,12 +9,7 @@
   <link href="style.css" rel="stylesheet" type="text/css"/>
   <link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css?family=Russo+One&amp;display=swap" rel="stylesheet"/>
-  <!-- Add the Unity WebGL player styles and scripts here -->
-  
   <link href="MyLittlePony/TemplateData/favicon.ico" rel="shortcut icon"/>
-  <link href="MyLittlePony/TemplateData/style.css" rel="stylesheet"/>
-  <script src="MyLittlePony/TemplateData/UnityProgress.js"> </script>
-  <script src="MyLittlePony/Build/UnityLoader.js"> </script>
   
   <script>
 	let unityInstance; // Declare unityInstance here
@@ -38,8 +33,14 @@
 			instance: null,
 			loaded: false,
 			loadFunction: null,
-			canvasSelector: "unityContainerMyLittlePony",
-			buildJson: "MyLittlePony/Build/3-28-23.json"
+			//Need a direct reference to a DOM element
+			//Use document.querySelector with the # prefix in the selector to select by ID.
+			canvasSelector: "#unityContainerMyLittlePony",
+			streamingAssetsUrl: "MyLittlePony/StreamingAssets",
+			companyName: "DefaultCompany",
+			productName: "MyLittlePony",
+			productVersion: "0.1",
+			buildUrl: "MyLittlePony/Build"
 		}
 	};
 
@@ -160,20 +161,39 @@
 					return;
 				}
 
-				console.log(`Preparing to instantiate ${gameData.canvasSelector}`);
-				setTimeout(function() {
-					console.log(`Instantiating ${gameData.canvasSelector}`);
-					gameData.instance = UnityLoader.instantiate(gameData.canvasSelector, gameData.buildJson, {
-						onProgress: function(unityInstance, progress) {
-							console.log("Loading progress:", progress);
-							if (progress === 1) {
-								console.log(`${gameName} Loading finished`);
-								gameData.loaded = true;
-								gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
-							}
-						}
+				const buildUrl = gameData.buildUrl;
+				const canvasElement = document.querySelector(gameData.canvasSelector);
+
+				// Configuration for Unity
+				const config = {
+					dataUrl: buildUrl + `/${gameName}.data`,
+					frameworkUrl: buildUrl + `/${gameName}.framework.js`,
+					codeUrl: buildUrl + `/${gameName}.wasm`,
+					streamingAssetsUrl: gameData.streamingAssetsUrl,
+					companyName: gameData.companyName,
+					productName: gameName,
+					productVersion: gameData.productVersion
+					// Add any other configurations if needed
+				};
+
+				// Load Unity
+				const loaderUrl = buildUrl + `/${gameName}.loader.js`;
+				const script = document.createElement("script");
+				script.src = loaderUrl;
+				script.onload = () => {
+					createUnityInstance(canvasElement, config, (progress) => {
+						console.log("Loading progress:", progress);
+					}).then((unityInstance) => {
+						gameData.instance = unityInstance;
+						gameData.loaded = true;
+						setTimeout(() => {
+						  gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
+						}, 500);
+					}).catch((message) => {
+						console.error(`Error loading ${gameName}:`, message);
 					});
-				}, 500); // 0.5 second delay
+				};
+				document.body.appendChild(script);
 			}
 
 			
@@ -560,8 +580,8 @@
        <div class="page-content" data-webgl-id="SpaceInvaders" style="height: 100%;">
         <div class="webgl-container">
          <div class="webgl-wrapper">
-          <div class="centered" id="webgl-content">
-           <!-- Add the Unity WebGL player container here -->
+          <div class="centered webgl-content-root">           
+		  <!-- Add the Unity WebGL player container here -->
            <div class="webgl-content">
 			  <canvas id="unityContainerSpaceInvaders" style="width: 832px; height: 468px;"></canvas>
               <div class="footer">
@@ -592,10 +612,10 @@
        <div class="page-content" data-webgl-id="MyLittlePony" style="height: 100%;">
         <div class="webgl-container">
          <div class="webgl-wrapper">
-          <div class="centered" id="webgl-content">
+          <div class="centered webgl-content-root">
            <!-- Add the Unity WebGL player container here -->
            <div class="webgl-content">
-            <div id="unityContainerMyLittlePony" style="width: 832px; height: 468px"></div>
+            <canvas id="unityContainerMyLittlePony" style="width: 832px; height: 468px"></canvas>
             <div class="footer">
              <div class="webgl-logo"> </div>
              <div class="fullscreen" onclick="UNITY_GAMES.MyLittlePony.instance.SetFullscreen(1)"> </div>
@@ -654,13 +674,13 @@
     </div>
     <div class="bottom-image-slider">
      <div class="image-slider">
-      <img src= iPath + "image1b.svg"/>
-      <img src= iPath + "legends777a.png"/>
-      <img src= iPath + "vmaxa.png"/>
-      <img src= iPath + "image7a.png"/>
-	  <img src= iPath + "mlpa.png"/>
-      <img src= iPath + "image5a.png"/>
-      <img src= iPath + "furymallarda.png"/>
+      <img src= "Images/image1b.svg"/>
+      <img src= "Images/legends777a.png"/>
+      <img src= "Images/vmaxa.png"/>
+      <img src= "Images/image7a.png"/>
+      <img src= "Images/mlpa.png"/>
+      <img src= "Images/image5a.png"/>
+      <img src= "Images/furymallarda.png"/>
       <!-- Add all your image sources here -->
      </div>
     </div>

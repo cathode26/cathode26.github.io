@@ -222,6 +222,38 @@ h1 {
   padding: 0 50px;
 }
 
+/* Unity pages: match the same layout behavior as video-container */
+.webgl-container {
+  opacity: 1;
+  display: grid;
+  grid-template-columns: 60% 40%;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+/* Left side: the Unity canvas area */
+.webgl-wrapper {
+  margin-left: auto;
+  max-width: 100%;
+}
+
+/* Right side: your text block */
+.webgl-container-text {
+  justify-self: center;
+  align-self: center;
+  text-align: left;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+/* Make canvas behave like your iframes/videos */
+.webgl-content canvas {
+  display: block;
+  max-width: 100%;
+}
+
 /* ------------------------------ */
 /* MOBILE / TABLET STACKED LAYOUT */
 /* ------------------------------ */
@@ -295,6 +327,43 @@ h1 {
   .video-container p {
     margin: 0;
     width: 100%;
+  }
+  
+  .webgl-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    height: auto;
+    position: relative;
+    margin-top: 0;
+    margin-bottom: 205px;
+  }
+
+  /* canvas sizing similar to your iframe rules */
+  .webgl-content canvas {
+    width: min(92vw, 900px) !important;
+    height: calc(min(92vw, 900px) * 0.5625) !important; /* if you want 16:9 */
+    margin: 0;
+  }
+
+  .webgl-container-text {
+    width: min(700px, 92%);
+    margin: 0 auto;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+  }
+
+  .webgl-container-text h1,
+  .webgl-container-text h2,
+  .webgl-container-text h3 {
+    text-align: center;
+    width: 100%;
+    margin-top: 0;
   }
 }
 
