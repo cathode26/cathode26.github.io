@@ -1,23 +1,35 @@
-/* ✅ Added: gives your flex containers real height so vertical centering can work */
+/* ---- Global layout constants ---- */
+:root{
+  /* Set this to the real height of your bottom image picker */
+  --bottom-bar-h: 100px;
+}
+
+/* Base: allow vertical scroll only when needed, prevent accidental horizontal overflow */
 html, body {
   height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
 body {
-  margin: 0;
-  padding: 0;
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
-  color: #333; /* Change the text color */
+  color: #333;
 }
 
+/* Reduce “phantom” overflow from default heading margins */
 h1 {
   font-family: Arial, sans-serif;
   color: #000000;
-  text-transform: none; /* Optional: to make the text all uppercase */
+  text-transform: none;
   letter-spacing: 0.2px;
+  margin-top: 0; /* important */
 }
 
+/* ---------------- */
+/* Social icon row  */
+/* ---------------- */
 .social-icons {
   display: flex;
   justify-content: center;
@@ -53,27 +65,38 @@ h1 {
 .icon-email i,
 .icon-github i,
 .icon-file i {
-  margin-top: 2px; /* Adjust the icon's vertical position */
+  margin-top: 2px;
 }
 
+/* ---------------- */
+/* Overall page app */
+/* ---------------- */
+
+/* Don’t add artificial bottom space here; the bottom bar is handled by main/page-content */
 .content-wrapper {
-  min-height: calc(100% - 10%);
-  padding-bottom: 100px; /* Adjust this value to match the height of the navigation bar */
+  min-height: 0;
+  padding-bottom: 0;
 }
 
+/* Remove the artificial top spacer (this was creating unnecessary scroll on some pages) */
 .top-blank {
-  height: 5%;
+  height: 0;
 }
 
+/*
+  Main “viewport area” above the fixed bottom bar.
+  If the bottom bar overlaps, increase --bottom-bar-h.
+*/
 .main {
   margin: 0 auto;
   padding: 0;
-  height: 100%;
+  height: calc(100dvh - var(--bottom-bar-h));
   position: relative;
-  overflow: hidden;
+  overflow: hidden; /* horizontal ribbon should not scroll */
   box-sizing: border-box;
 }
 
+/* Arrows */
 .arrow {
   width: 50px;
   height: 50px;
@@ -94,6 +117,13 @@ h1 {
   transform: translateY(-50%);
 }
 
+.right-arrow {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
 .arrow-overlay {
   position: absolute;
   width: 50px;
@@ -110,11 +140,18 @@ h1 {
   box-shadow: none !important;
 }
 
-.right-arrow {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
+/* ---------------- */
+/* Bottom image bar */
+/* ---------------- */
+.bottom-image-slider {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--bottom-bar-h);
+  background-color: black;
+  z-index: 100;
+  overflow: hidden;
 }
 
 .image-slider {
@@ -122,6 +159,7 @@ h1 {
   justify-content: center;
   align-items: center;
   margin: 5px 0;
+  height: 100%;
 }
 
 .image-slider img {
@@ -135,52 +173,69 @@ h1 {
   border-color: #333;
 }
 
+/* -------------- */
+/* Ribbon carousel */
+/* -------------- */
+.ribbon-wrapper {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
 .ribbon {
   display: flex;
   overflow-x: hidden;
   height: 100%;
-  width: 700vw; /* Updated */
+  width: 700vw; /* you can later switch to 700% to reduce iOS rounding issues */
   transition: transform 0.5s ease-in-out;
-}
-
-.ribbon-wrapper {
-  overflow: hidden;
-  width: 100%;
 }
 
 .ribbon > div {
   flex-shrink: 0;
   width: 100vw;
+  height: 100%;
 }
 
+/*
+  IMPORTANT CHANGE:
+  page-content is the vertical scroll container.
+  If content fits, no scrollbar.
+  If it doesn't, it scrolls inside the page area (above the bottom bar).
+*/
 .page-content {
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   margin-left: auto;
   margin-right: auto;
-  width: 100%;
+
   display: flex;
   flex-direction: column;
-  justify-content: center;
+
+  /* stop vertical centering from creating phantom top/bottom space */
+  justify-content: flex-start;
   align-items: center;
-  height: 100%;
+
   text-align: center;
   z-index: 2;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  /* Small padding so content doesn't touch edges */
+  padding: 16px 0;
+  box-sizing: border-box;
 }
 
-.bottom-image-slider {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: black;
-  z-index: 100;
-}
-
+/* --------------------- */
+/* Intro text page (1)   */
+/* --------------------- */
 .intro-text {
   max-width: 100%;
   margin: 0 auto;
   text-align: left;
-  color: #000000; /* Updated text color */
+  color: #000000;
 }
 
 .intro-text-wrapper {
@@ -193,11 +248,14 @@ h1 {
   color: #000000;
 }
 
+/* --------------------- */
+/* Wide screen layout    */
+/* --------------------- */
 .video-container {
   opacity: 1;
   display: grid;
   grid-template-columns: 60% 40%;
-  align-items: center; /* Centering the grid items vertically */
+  align-items: center;
   width: 100%;
   height: auto;
   position: relative;
@@ -233,13 +291,11 @@ h1 {
   position: relative;
 }
 
-/* Left side: the Unity canvas area */
 .webgl-wrapper {
   margin-left: auto;
   max-width: 100%;
 }
 
-/* Right side: your text block */
 .webgl-container-text {
   justify-self: center;
   align-self: center;
@@ -248,7 +304,6 @@ h1 {
   margin-right: 20px;
 }
 
-/* Make canvas behave like your iframes/videos */
 .webgl-content canvas {
   display: block;
   max-width: 100%;
@@ -259,41 +314,23 @@ h1 {
 /* ------------------------------ */
 @media (max-width: 1250px) {
 
-  /* ✅ Added: make each ribbon "page" fill the viewport so centering can happen */
-  .main,
-  .ribbon-wrapper,
-  .ribbon,
-  .ribbon > div {
-    min-height: 100vh;
-  }
-
-  /* ✅ Added: reserve space for the bottom slider (adjust 110px if needed) */
-  .page-content {
-    min-height: calc(100vh - 110px);
-    padding-bottom: 110px;
-    box-sizing: border-box;
-
-    /* Center the page content vertically instead of pinning it to top */
-    justify-content: center; /* was flex-start */
-  }
-
   .intro-text-wrapper {
     width: 80%;
   }
 
+  /* Stack media + text */
   .video-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;   /* was flex-start */
-    gap: 16px;                 /* adds spacing between video and text */
+    justify-content: flex-start;
+    gap: 16px;
     height: auto;
     position: relative;
     margin-top: 0;
-    margin-bottom: 205px;
+    margin-bottom: 24px;
   }
 
-  /* Responsive video sizing (replaces hard-coded 832px width) */
   .video-container iframe,
   .video-container video {
     width: min(92vw, 900px);
@@ -303,7 +340,6 @@ h1 {
     top: 0;
   }
 
-  /* Center the text block under the media */
   .video-container .text-wrapper {
     position: relative;
     width: min(700px, 92%);
@@ -311,11 +347,10 @@ h1 {
     padding: 0 16px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* centers the block itself */
-    text-align: left;    /* paragraphs read better left-aligned */
+    align-items: center;
+    text-align: left;
   }
 
-  /* Center headings only (optional but usually looks nice) */
   .video-container .text-wrapper h1,
   .video-container .text-wrapper h2,
   .video-container .text-wrapper h3 {
@@ -328,24 +363,39 @@ h1 {
     margin: 0;
     width: 100%;
   }
-  
+
   .webgl-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 16px;
     height: auto;
     position: relative;
     margin-top: 0;
-    margin-bottom: 205px;
+    margin-bottom: 24px;
+  }
+  
+  /* ✅ Mobile: undo desktop push + hard-center Unity */
+  .webgl-wrapper {
+    margin-left: 0;      /* was auto on desktop */
+    margin-right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
-  /* canvas sizing similar to your iframe rules */
+  .webgl-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* centers canvas + footer */
+  }
+
   .webgl-content canvas {
     width: min(92vw, 900px) !important;
-    height: calc(min(92vw, 900px) * 0.5625) !important; /* if you want 16:9 */
-    margin: 0;
+    height: calc(min(92vw, 900px) * 0.5625) !important; /* 16:9 */
+    margin: 0 auto;      /* extra insurance */
   }
 
   .webgl-container-text {
@@ -367,6 +417,44 @@ h1 {
   }
 }
 
+/* Mobile/tablet landscape: use full height, and size Unity by available height */
+@media (max-width: 1250px) and (orientation: landscape) {
+  /* Hide picker (as you wanted) */
+  .bottom-image-slider { display: none !important; }
+
+  /* Main gets full dynamic viewport height */
+  .main { height: 100dvh !important; }
+
+  /* Page content gets full height with a tiny safe padding */
+  .page-content {
+    padding: 8px 0;
+  }
+
+  /*
+    Fit Unity canvas to HEIGHT first.
+    16:9 width = height * 16/9.
+    Clamp height so it can't exceed the visible area.
+  */
+  .webgl-content canvas {
+    height: min(88dvh, 520px) !important;            /* adjust 88dvh if you want more/less breathing room */
+    width: calc(min(88dvh, 520px) * 1.7777778) !important;
+    max-width: 96vw !important;                      /* don't exceed screen width */
+    max-height: 88dvh !important;
+  }
+
+  /* Same idea for iframes/videos so everything matches */
+  .video-container iframe,
+  .video-container video {
+    height: min(88dvh, 520px) !important;
+    width: calc(min(88dvh, 520px) * 1.7777778) !important;
+    max-width: 96vw !important;
+    max-height: 88dvh !important;
+  }
+}
+
+/* --------------------- */
+/* Summary blocks        */
+/* --------------------- */
 .summary-columns {
   display: flex;
   flex-wrap: wrap;
@@ -376,14 +464,14 @@ h1 {
   flex: 1 1 50%;
   box-sizing: border-box;
   padding: 10px;
-  margin-bottom: 0px; /* Adjusts the vertical space between sections */
+  margin-bottom: 0px;
 }
 
 .summary-section h4 {
-  margin: 0; /* Removes the margin from the <h4> elements */
+  margin: 0;
 }
 
 .summary-section ul {
-  margin: 0; /* Removes the margin from the <ul> elements */
-  padding-left: 20px; /* Adjusts the padding for the <ul> elements */
+  margin: 0;
+  padding-left: 20px;
 }
