@@ -59,6 +59,7 @@
 		  var iPath = "Images/";
 		  var images = [
 			["image1a.svg", "image1b.svg"],
+			["oasisgolda.png", "oasisgoldb.png"],
 			["legends777a.png", "legends777b.png"],
 			["vmaxa.png", "vmaxb.png"],
 			["image7a.png", "image7b.png"],
@@ -76,7 +77,8 @@
 		  $('.image-slider img:eq(4)').attr('src', iPath + images[4][0]);
 		  $('.image-slider img:eq(5)').attr('src', iPath + images[5][0]);
 		  $('.image-slider img:eq(6)').attr('src', iPath + images[6][0]);
-			
+          $('.image-slider img:eq(6)').attr('src', iPath + images[7][0]);
+
 		  $('.image-slider img').on('mouseenter', function() {
 			var index = $(this).index();
 			if (index != activeIndex) {
@@ -366,6 +368,7 @@
 
 		   // YouTube video handling
 			var youtubeVideoIds = [
+			  "yJgtnvi-TZs", // Express Software slot client
 			  "aiFt6kaaomU", // Star Cluck
 			  "aBHRRuYBLr8", // Fury Mallard
 			  "-esJuFV-jWU", // Best Casino Legends Slots 777
@@ -374,10 +377,11 @@
 			var players = [];
 			
 			var videoNameMap = {
-				"starcluck": 0,
-				"furymallard": 1,
-				"bestcasino": 2,
-				"vmax": 3,
+			    "expressslots": 0,
+				"starcluck": 1,
+				"furymallard": 2,
+				"bestcasino": 3,
+				"vmax": 4,
 			  };
 
 			function onYouTubeIframeAPIReady() {
@@ -514,8 +518,39 @@
         </div>
        </div>
       </div>
+	  <!-- Page 2 content -->
+	  <div>
+        <div class="page-content">
+          <div class="video-container">
+            <iframe
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+              frameborder="0"
+              height="468"
+              id="youtube-expressslots"
+              src="https://www.youtube.com/embed/yJgtnvi-TZs?enablejsapi=1"
+              width="832">
+            </iframe>
+      
+            <div class="text-wrapper">
+              <h1>Express Software — Slot Client Foundations & Tooling</h1>
+              <p>
+                At Express Software, I own and evolve the Unity slot client foundation used across multiple games. My work spans
+                client architecture, content pipelines, and internal tools that help the team build and ship games faster.
+                I build reusable systems for UI, loading, and configuration; create workflows that reduce manual setup; and
+                focus heavily on performance/memory stability for real-world deployment constraints.
+              </p>
+              <p>
+                Highlights include scalable Unity architecture, tooling and automation for game setup/iteration, asset lifecycle
+                and loading patterns (e.g., Addressables-style workflows), and a focus on keeping production code maintainable as
+                content grows.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+	  <!-- Page 3 content -->
       <div>
-       <!-- Page 2 content -->
        <div class="page-content">
         <div class="video-container">
          <iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" height="468" id="youtube-bestcasino" src="https://www.youtube.com/embed/-esJuFV-jWU?enablejsapi=1" width="832">
@@ -531,7 +566,7 @@
         </div>
        </div>
       </div>
-      <!-- Page 3 content -->
+      <!-- Page 4 content -->
       <div>
        <div class="page-content">
         <div class="video-container">
@@ -548,7 +583,7 @@
         </div>
        </div>
       </div>
-	  <!-- Page 4 content -->
+	  <!-- Page 5 content -->
       <div>
        <div class="page-content" data-webgl-id="SpaceInvaders" style="height: 100%;">
         <div class="webgl-container">
@@ -580,7 +615,7 @@
 		 </div>
         </div>
        </div>
-      <!-- Page 5 content -->
+      <!-- Page 6 content -->
       <div>
        <div class="page-content" data-webgl-id="MyLittlePony" style="height: 100%;">
         <div class="webgl-container">
@@ -609,7 +644,7 @@
         </div>
        </div>
       </div>
-       <!-- Page 6 content -->
+       <!-- Page 7 content -->
 	   <div>
        <div class="page-content">
         <div class="video-container">
@@ -626,7 +661,7 @@
         </div>
        </div>
       </div>
-       <!-- Page 7 content -->
+       <!-- Page 8 content -->
 	   <div>
        <div class="page-content">
         <div class="video-container">
@@ -648,6 +683,7 @@
     <div class="bottom-image-slider">
      <div class="image-slider">
       <img src= "Images/image1b.svg"/>
+      <img src= "Images/oasisgolda.png"/>
       <img src= "Images/legends777a.png"/>
       <img src= "Images/vmaxa.png"/>
       <img src= "Images/image7a.png"/>

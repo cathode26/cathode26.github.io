@@ -186,7 +186,7 @@ h1 {
   display: flex;
   overflow-x: hidden;
   height: 100%;
-  width: 700vw; /* you can later switch to 700% to reduce iOS rounding issues */
+  width: 800vw; /* you can later switch to 700% to reduce iOS rounding issues */
   transition: transform 0.5s ease-in-out;
 }
 
