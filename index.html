@@ -1,702 +1,687 @@
 <!DOCTYPE html>
 <html>
- <head>
+<head>
   <meta charset="utf-8"/>
-  <title>
-   Main Page
-  </title>
+  <title>Main Page</title>
+
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
   <link href="style.css" rel="stylesheet" type="text/css"/>
-  <link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css?family=Russo+One&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet"/>
   <link href="MyLittlePony/TemplateData/favicon.ico" rel="shortcut icon"/>
-  
+
   <script>
-	let unityInstance; // Declare unityInstance here
-	let interval;
+    let unityInstance;
+    let interval;
 
-	const UNITY_GAMES = {
-		"SpaceInvaders": {
-			instance: null,
-			loaded: false,
-			loadFunction: null,
-			//Need a direct reference to a DOM element
-			//Use document.querySelector with the # prefix in the selector to select by ID.
-			canvasSelector: "#unityContainerSpaceInvaders",
-			streamingAssetsUrl: "SpaceInvaders/StreamingAssets",
-			companyName: "DefaultCompany",
-			productName: "SpaceInvaders",
-			productVersion: "0.1",
-			buildUrl: "SpaceInvaders/Build"
-		},
-		"MyLittlePony": {
-			instance: null,
-			loaded: false,
-			loadFunction: null,
-			//Need a direct reference to a DOM element
-			//Use document.querySelector with the # prefix in the selector to select by ID.
-			canvasSelector: "#unityContainerMyLittlePony",
-			streamingAssetsUrl: "MyLittlePony/StreamingAssets",
-			companyName: "DefaultCompany",
-			productName: "MyLittlePony",
-			productVersion: "0.1",
-			buildUrl: "MyLittlePony/Build"
-		}
-	};
+    const UNITY_GAMES = {
+      "SpaceInvaders": {
+        instance: null,
+        loaded: false,
+        loadFunction: null,
+        canvasSelector: "#unityContainerSpaceInvaders",
+        streamingAssetsUrl: "SpaceInvaders/StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "SpaceInvaders",
+        productVersion: "0.1",
+        buildUrl: "SpaceInvaders/Build"
+      },
+      "MyLittlePony": {
+        instance: null,
+        loaded: false,
+        loadFunction: null,
+        canvasSelector: "#unityContainerMyLittlePony",
+        streamingAssetsUrl: "MyLittlePony/StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "MyLittlePony",
+        productVersion: "0.1",
+        buildUrl: "MyLittlePony/Build"
+      }
+    };
+  </script>
 
-	document.addEventListener("DOMContentLoaded", function() {
-       
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      const iPath = "Images/";
+      const images = [
+        ["image1a.svg", "image1b.svg"],
+        ["oasisgolda.png", "oasisgoldb.png"],
+        ["legends777a.png", "legends777b.png"],
+        ["vmaxa.png", "vmaxb.png"],
+        ["image7a.png", "image7b.png"],
+        ["mlpa.png", "mlpb.png"],
+        ["image5a.png", "image5b.png"],
+        ["furymallarda.png", "furymallardb.png"]
+      ];
+
+      let activeIndex = 0;
+      let transitionTimeoutId;
+      let redrawIntervalId;
+
+      function initializeSliderImages() {
+        $('.image-slider img:eq(0)').attr('src', iPath + images[0][1]);
+        $('.image-slider img:eq(1)').attr('src', iPath + images[1][0]);
+        $('.image-slider img:eq(2)').attr('src', iPath + images[2][0]);
+        $('.image-slider img:eq(3)').attr('src', iPath + images[3][0]);
+        $('.image-slider img:eq(4)').attr('src', iPath + images[4][0]);
+        $('.image-slider img:eq(5)').attr('src', iPath + images[5][0]);
+        $('.image-slider img:eq(6)').attr('src', iPath + images[6][0]);
+        $('.image-slider img:eq(7)').attr('src', iPath + images[7][0]);
+      }
+
+      function getPageAtIndex(index) {
+        const allDivs = document.querySelectorAll('.ribbon > div > div');
+        const pageContents = Array.from(allDivs).filter(div => div.classList.contains('page-content'));
+        return pageContents[index] || null;
+      }
+
+      function getWebGLIdForPageIndex(index) {
+        const currentPage = getPageAtIndex(index);
+        if (currentPage) {
+          return currentPage.getAttribute('data-webgl-id');
+        }
+        return null;
+      }
+
+      function getVideoIframeForPageIndex(index) {
+        const page = getPageAtIndex(index);
+        if (!page) return null;
+        return page.querySelector('iframe[data-video-id]');
+      }
+
+      function buildYoutubeEmbedUrl(videoId) {
+        return `https://www.youtube.com/embed/${videoId}?enablejsapi=0&rel=0&modestbranding=1`;
+      }
+
+      function loadVideoForPage(index) {
+        const iframe = getVideoIframeForPageIndex(index);
+        if (!iframe) return;
+
+        const videoId = iframe.getAttribute('data-video-id');
+        if (!videoId) return;
+
+        if (iframe.getAttribute('src')) return;
+
+        iframe.setAttribute('src', buildYoutubeEmbedUrl(videoId));
+        console.log(`Loaded video for page ${index}: ${videoId}`);
+      }
+
+      function unloadVideoForPage(index) {
+        const iframe = getVideoIframeForPageIndex(index);
+        if (!iframe) return;
+
+        if (iframe.getAttribute('src')) {
+          iframe.setAttribute('src', '');
+          console.log(`Unloaded video for page ${index}`);
+        }
+      }
+
+      function unloadAllInactiveVideos(currentIndex) {
+        const pageContents = document.querySelectorAll('.page-content');
+
+        pageContents.forEach((page, index) => {
+          const iframe = page.querySelector('iframe[data-video-id]');
+          if (!iframe) return;
+
+          if (index === currentIndex) {
+            loadVideoForPage(index);
+          } else {
+            unloadVideoForPage(index);
+          }
+        });
+      }
+
+      function callLoadLevelWhenReady(index) {
+        const webglId = getWebGLIdForPageIndex(index);
+        const gameData = UNITY_GAMES[webglId];
+
+        console.log("Target WebGL ID:", webglId);
+
+        if (webglId && gameData && gameData.loaded && gameData.instance) {
+          console.log(webglId + " turning ShowPlayer on");
+          gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
+          clearInterval(interval);
+        } else if (!webglId) {
+          clearInterval(interval);
+        }
+      }
+
+      function loadUnityGame(gameName, autoShowDelayMs = 0) {
+        const gameData = UNITY_GAMES[gameName];
+
+        if (!gameData) {
+          console.error(`No game data found for: ${gameName}`);
+          return;
+        }
+
+        if (gameData.instance || gameData.loaded) {
+          return;
+        }
+
+        const buildUrl = gameData.buildUrl;
+        const canvasElement = document.querySelector(gameData.canvasSelector);
+
+        if (!canvasElement) {
+          console.error(`Canvas not found for: ${gameName}`);
+          return;
+        }
+
+        const config = {
+          dataUrl: `${buildUrl}/${gameName}.data`,
+          frameworkUrl: `${buildUrl}/${gameName}.framework.js`,
+          codeUrl: `${buildUrl}/${gameName}.wasm`,
+          streamingAssetsUrl: gameData.streamingAssetsUrl,
+          companyName: gameData.companyName,
+          productName: gameName,
+          productVersion: gameData.productVersion
+        };
+
+        const loaderUrl = `${buildUrl}/${gameName}.loader.js`;
+
+        if (!document.querySelector(`script[data-unity-loader="${gameName}"]`)) {
+          const script = document.createElement("script");
+          script.src = loaderUrl;
+          script.setAttribute("data-unity-loader", gameName);
+
+          script.onload = () => {
+            createUnityInstance(canvasElement, config, (progress) => {
+              console.log(`${gameName} loading progress:`, progress);
+            }).then((instance) => {
+              gameData.instance = instance;
+              gameData.loaded = true;
+
+              if (autoShowDelayMs > 0) {
+                setTimeout(() => {
+                  if (gameData.instance) {
+                    gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
+                  }
+                }, autoShowDelayMs);
+              } else {
+                gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
+              }
+            }).catch((message) => {
+              console.error(`Error loading ${gameName}:`, message);
+            });
+          };
+
+          document.body.appendChild(script);
+        }
+      }
+
+      function loadMyLittlePonyGame() {
+        loadUnityGame("MyLittlePony", 500);
+      }
+
+      function loadSpaceInvadersGame() {
+        loadUnityGame("SpaceInvaders", 0);
+      }
+
+      UNITY_GAMES["SpaceInvaders"].loadFunction = loadSpaceInvadersGame;
+      UNITY_GAMES["MyLittlePony"].loadFunction = loadMyLittlePonyGame;
+
+      function ribbonTransitionEnd(previousIndex) {
+        const webglId = getWebGLIdForPageIndex(previousIndex);
+        const gameData = UNITY_GAMES[webglId];
+
+        console.log("outside activeIndex " + activeIndex);
+        console.log("outside previousIndex " + previousIndex);
+
+        if (gameData) {
+          const previousPage = document.querySelector(`.ribbon > div:nth-child(${previousIndex + 1}) > .page-content[data-webgl-id="${webglId}"]`);
+          const activePage = document.querySelector(`.ribbon > div:nth-child(${activeIndex + 1}) > .page-content[data-webgl-id="${webglId}"]`);
+
+          if (previousPage && activePage !== previousPage) {
+            const webglContent = previousPage.querySelector('.webgl-content');
+
+            if (webglContent && gameData.instance) {
+              webglContent.style.visibility = 'hidden';
+              gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'false');
+              console.log(`Turning ShowPlayer off for ${webglId}`);
+            }
+          }
+        }
+
+        $('.ribbon').off('transitionend');
+      }
+
+      function updatePageVisibility(index, previousIndex) {
+        const currentPage = getPageAtIndex(index);
+
+        if (!currentPage) {
+          console.error(`Page not found for index: ${index}`);
+          return;
+        }
+
+        unloadAllInactiveVideos(index);
+
+        const webglID = currentPage.getAttribute('data-webgl-id');
+
+        $('.ribbon').off('transitionend');
+
+        if (webglID) {
+          const webglContent = currentPage.querySelector('.webgl-content');
+          if (webglContent) {
+            console.log("show webgl video " + webglContent);
+            webglContent.style.visibility = 'visible';
+          } else {
+            console.error(`No element found with ID: ${webglID}`);
+          }
+
+          const unityGameData = UNITY_GAMES[webglID];
+          if (unityGameData) {
+            if (!unityGameData.instance && !unityGameData.loaded) {
+              unityGameData.loadFunction();
+            } else if (unityGameData.instance && unityGameData.loaded) {
+              unityGameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
+              console.log(`turning ShowPlayer on for ${webglID}`);
+            } else {
+              interval = setInterval(function () {
+                callLoadLevelWhenReady(index);
+              }, 500);
+            }
+          } else {
+            console.error(`No game data found for: ${webglID}`);
+          }
+        }
+
+        setTimeout(function () {
+          console.log("ribbonTransitionEnd previousIndex " + previousIndex);
+          ribbonTransitionEnd(previousIndex);
+        }, 500);
+
+        console.log("added setTimeout for ribbonTransitionEnd");
+      }
+
+      function toggleTransition(enable) {
+        if (enable) {
+          $('.ribbon').css('transition', 'transform 0.5s ease-in-out');
+
+          clearTimeout(transitionTimeoutId);
+          transitionTimeoutId = setTimeout(function () {
+            toggleTransition(false);
+          }, 500);
+
+          redrawIntervalId = setInterval(redrawYoutubeContainer, 16);
+        } else {
+          $('.ribbon').css('transition', 'none');
+          clearInterval(redrawIntervalId);
+        }
+      }
+
+      function redrawYoutubeContainer() {
+        $(".video-container").css("opacity", function (index, currentOpacity) {
+          return currentOpacity == 1 ? 0.999 : 1;
+        });
+      }
+
+      function switchPage(index) {
+        if (index === -1 || index === activeIndex) {
+          return;
+        }
+
+        toggleTransition(true);
+
+        const newPosition = (-1 * index * 100) + "vw";
+        $(".ribbon").css("transform", "translateX(" + newPosition + ")");
+
+        const previousPageWebGLID = getWebGLIdForPageIndex(activeIndex);
+
+        if (previousPageWebGLID) {
+          console.log("ribbonTransitionEnd activeIndex index. " + activeIndex + " " + index);
+          ribbonTransitionEnd(activeIndex);
+        }
+
+        const previousIndex = activeIndex;
+
+        if (activeIndex !== -1) {
+          $(".image-slider img:eq(" + activeIndex + ")").attr("src", iPath + images[activeIndex][0]);
+        }
+
+        $(".image-slider img:eq(" + index + ")").attr("src", iPath + images[index][1]);
+        activeIndex = index;
+
+        updatePageVisibility(activeIndex, previousIndex);
+      }
+
+      initializeSliderImages();
+      unloadAllInactiveVideos(activeIndex);
+
+      $('.image-slider img').on('mouseenter', function () {
+        const index = $(this).index();
+        if (index !== activeIndex) {
+          $(this).attr('src', iPath + images[index][1]);
+        }
+      });
+
+      $('.image-slider img').on('mouseleave', function () {
+        const index = $(this).index();
+        if (index !== activeIndex) {
+          $(this).attr('src', iPath + images[index][0]);
+        }
+      });
+
+      $('.image-slider img').on('click', function () {
+        const index = $(this).index();
+        switchPage(index);
+      });
+
+      $('.left-arrow .arrow-overlay').on('click', function () {
+        if (activeIndex > 0) {
+          switchPage(activeIndex - 1);
+        }
+      });
+
+      $('.right-arrow .arrow-overlay').on('click', function () {
+        if (activeIndex < images.length - 1) {
+          switchPage(activeIndex + 1);
+        }
+      });
     });
-	window.onload = function() {
-	    
-	};
   </script>
-  <!-- End of Unity WebGL player code -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js">
-  </script>
-  <script>
-   $(document).ready(function() {
-		  var iPath = "Images/";
-		  var images = [
-			["image1a.svg", "image1b.svg"],
-			["oasisgolda.png", "oasisgoldb.png"],
-			["legends777a.png", "legends777b.png"],
-			["vmaxa.png", "vmaxb.png"],
-			["image7a.png", "image7b.png"],
-			["mlpa.png", "mlpb.png"],
-			["image5a.png", "image5b.png"],
-			["furymallarda.png", "furymallardb.png"]
+</head>
 
-		  ];
-		  var activeIndex = 0;
+<body>
+  <div class="top-blank"></div>
 
-		  $('.image-slider img:eq(0)').attr('src', iPath + images[0][1]);
-		  $('.image-slider img:eq(1)').attr('src', iPath + images[1][0]);
-		  $('.image-slider img:eq(2)').attr('src', iPath + images[2][0]);
-		  $('.image-slider img:eq(3)').attr('src', iPath + images[3][0]);
-		  $('.image-slider img:eq(4)').attr('src', iPath + images[4][0]);
-		  $('.image-slider img:eq(5)').attr('src', iPath + images[5][0]);
-		  $('.image-slider img:eq(6)').attr('src', iPath + images[6][0]);
-          $('.image-slider img:eq(7)').attr('src', iPath + images[7][0]);
-
-		  $('.image-slider img').on('mouseenter', function() {
-			var index = $(this).index();
-			if (index != activeIndex) {
-			  $(this).attr('src', iPath + images[index][1]);
-			}
-		  });
-
-		  $('.image-slider img').on('mouseleave', function() {
-			var index = $(this).index();
-			if (index != activeIndex) {
-			  $(this).attr('src', iPath + images[index][0]);
-			}
-		  });
-
-			function getWebGLIdForPageIndex(index) {
-				const currentPage = document.querySelector(`.ribbon > div:nth-child(${index + 1}) > .page-content`);
-				console.log("Parent for Index", index, ":", currentPage.parentElement);
-				console.log("Selected Element:", currentPage);
-				if (currentPage) {
-					return currentPage.getAttribute('data-webgl-id');
-				}
-				return null;
-			}
-
-			function switchPage(index) {
-				if (index === -1) {
-					return;
-				}
-				pauseVideos();
-				toggleTransition(true);
-
-				const newPosition = (-1 * index * 100) + "vw";
-				$(".ribbon").css("transform", "translateX(" + newPosition + ")");
-
-				const previousPageWebGLID = getWebGLIdForPageIndex(activeIndex);
-
-				// If navigating away from a WebGL page and not navigating to another WebGL page, call ribbonTransitionEnd
-				if (previousPageWebGLID) {
-					console.log("ribbonTransitionEnd activeIndex index. " + activeIndex + " " + index);
-					ribbonTransitionEnd(activeIndex);
-				}
-
-				const previousIndex = activeIndex;
-				if (activeIndex !== -1) {
-					$(".image-slider img:eq(" + activeIndex + ")").attr("src", iPath + images[activeIndex][0]);
-				}
-				$(".image-slider img:eq(" + index + ")").attr("src", iPath + images[index][1]);
-				activeIndex = index;
-				updatePageVisibility(activeIndex, previousIndex);
-			}
-
-			function callLoadLevelWhenReady(index) {
-				const webglId = getWebGLIdForPageIndex(index);
-				const gameData = UNITY_GAMES[webglId];
-
-				console.log("Target WebGL ID:", webglId);
-				
-				if(webglId && gameData.loaded && gameData.instance)
-				{
-					console.log(webglId + " turning ShowPlayer on");
-					gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
-					clearInterval(interval);
-				} 
-				else if (!webglId) 
-				{
-					clearInterval(interval);
-				}
-			}
-
-			function getPageAtIndex(index) {
-				const allDivs = document.querySelectorAll('.ribbon > div > div');
-				const pageContents = Array.from(allDivs).filter(div => div.classList.contains('page-content'));
-				return pageContents[index];
-			}			
-			
-			function loadMyLittlePonyGame() {
-				const gameName = "MyLittlePony";
-				const gameData = UNITY_GAMES[gameName];
-				
-				if (!gameData) {
-					console.error(`No game data found for: ${gameName}`);
-					return;
-				}
-
-				const buildUrl = gameData.buildUrl;
-				const canvasElement = document.querySelector(gameData.canvasSelector);
-
-				// Configuration for Unity
-				const config = {
-					dataUrl: buildUrl + `/${gameName}.data`,
-					frameworkUrl: buildUrl + `/${gameName}.framework.js`,
-					codeUrl: buildUrl + `/${gameName}.wasm`,
-					streamingAssetsUrl: gameData.streamingAssetsUrl,
-					companyName: gameData.companyName,
-					productName: gameName,
-					productVersion: gameData.productVersion
-					// Add any other configurations if needed
-				};
-
-				// Load Unity
-				const loaderUrl = buildUrl + `/${gameName}.loader.js`;
-				const script = document.createElement("script");
-				script.src = loaderUrl;
-				script.onload = () => {
-					createUnityInstance(canvasElement, config, (progress) => {
-						console.log("Loading progress:", progress);
-					}).then((unityInstance) => {
-						gameData.instance = unityInstance;
-						gameData.loaded = true;
-						setTimeout(() => {
-						  gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
-						}, 500);
-					}).catch((message) => {
-						console.error(`Error loading ${gameName}:`, message);
-					});
-				};
-				document.body.appendChild(script);
-			}
-
-			
-			function loadSpaceInvadersGame() {
-				const gameName = "SpaceInvaders";
-				const gameData = UNITY_GAMES[gameName];
-				
-				if (!gameData) {
-					console.error(`No game data found for: ${gameName}`);
-					return;
-				}
-				
-				const buildUrl = gameData.buildUrl;
-				const canvasElement = document.querySelector(gameData.canvasSelector);
-
-				// Configuration for Unity
-				const config = {
-					dataUrl: buildUrl + `/${gameName}.data`,
-					frameworkUrl: buildUrl + `/${gameName}.framework.js`,
-					codeUrl: buildUrl + `/${gameName}.wasm`,
-					streamingAssetsUrl: gameData.streamingAssetsUrl,
-					companyName: gameData.companyName,
-					productName: gameName,
-					productVersion: gameData.productVersion
-					// Add any other configurations if needed
-				};
-
-				// Load Unity
-				const loaderUrl = buildUrl + `/${gameName}.loader.js`;
-				const script = document.createElement("script");
-				script.src = loaderUrl;
-				script.onload = () => {
-					createUnityInstance(canvasElement, config, (progress) => {
-						console.log("Loading progress:", progress);
-					}).then((unityInstance) => {
-						gameData.instance = unityInstance;
-						gameData.loaded = true;
-						gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
-					}).catch((message) => {
-						console.error(`Error loading ${gameName}:`, message);
-					});
-				};
-				document.body.appendChild(script);
-			}
-		
-			UNITY_GAMES["SpaceInvaders"].loadFunction = loadSpaceInvadersGame;
-			UNITY_GAMES["MyLittlePony"].loadFunction = loadMyLittlePonyGame;
-
-			function updatePageVisibility(index, previousIndex) 
-			{
-				const currentPage = getPageAtIndex(index);
-
-				if (!currentPage) {
-					console.error(`Page not found for index: ${index}`);
-					return;
-				}
-
-				const webglID = currentPage ? currentPage.getAttribute('data-webgl-id') : null;
-
-				// Remove any previous transitionend event listeners
-				$('.ribbon').off('transitionend');
-
-				if (webglID) {
-					const webglContent = currentPage.querySelector('.webgl-content');
-					if (webglContent) {
-						console.log("show webglvideo " + webglContent);
-						webglContent.style.visibility = 'visible';
-					} else {
-						console.error(`No element found with ID: ${webglID}`);
-					}
-
-					const unityGameData = UNITY_GAMES[webglID];
-					if (unityGameData) {
-						if (!unityGameData.instance && !unityGameData.loaded) {
-							// Load the game using the mapped load function
-							unityGameData.loadFunction();
-						} else if (unityGameData.instance && unityGameData.loaded) {
-							unityGameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'true');
-							console.log(`turning ShowPlayer on for ${webglID}`);
-						} else {
-							interval = setInterval(function() {
-								callLoadLevelWhenReady(index);
-							}, 500); // Check every 500 milliseconds (0.5 second)
-						}
-					} else {
-						console.error(`No game data found for: ${webglID}`);
-					}
-				}
-
-				// Call ribbonTransitionEnd after the transition duration (in milliseconds)
-				setTimeout(function() {
-					console.log("ribbonTransitionEnd previousIndex " + previousIndex);
-					ribbonTransitionEnd(previousIndex);
-				}, 500); // The duration of the transition in milliseconds
-				console.log("added setTimeout for ribbonTransitionEnd");
-			}
-
-
-			function ribbonTransitionEnd(previousIndex) {
-				const webglId = getWebGLIdForPageIndex(previousIndex);
-				const gameData = UNITY_GAMES[webglId];
-
-				console.log("outside activeIndex " + activeIndex);
-				console.log("outside previousIndex " + previousIndex);
-
-				if (gameData) {
-					const previousPage = document.querySelector(`.ribbon > div:nth-child(${previousIndex + 1}) > .page-content[data-webgl-id="${webglId}"]`);
-					const activePage = document.querySelector(`.ribbon > div:nth-child(${activeIndex + 1}) > .page-content[data-webgl-id="${webglId}"]`);
-
-					if (previousPage && activePage !== previousPage) {
-						const webglContent = previousPage.querySelector('.webgl-content');
-						console.log("webglContent " + webglContent);
-
-						if (webglContent && gameData.instance) {
-							webglContent.style.visibility = 'hidden';
-							gameData.instance.SendMessage('WebGLCommunicator', 'ShowPlayer', 'false');
-							console.log(`Turning ShowPlayer off for ${webglId}`);
-						}
-					}
-				}
-
-				// Remove the event listener to prevent multiple calls
-				$('.ribbon').off('transitionend');
-			}
-
-
-		  $('.image-slider img').on('click', function() {
-			var index = $(this).index();
-			if (index != activeIndex) {
-			  switchPage(index);
-			}
-		  });
-
-		  $('.left-arrow .arrow-overlay').on('click', function() {
-			  if (activeIndex > 0) {
-				switchPage(activeIndex - 1);
-			  }
-			});
-
-			$('.right-arrow .arrow-overlay').on('click', function() {
-			  if (activeIndex < images.length - 1) {
-				switchPage(activeIndex + 1);
-			  }
-			});
-			
-			var transitionTimeoutId;
-			var redrawIntervalId;
-
-			function toggleTransition(enable) {
-			  if (enable) {
-				$('.ribbon').css('transition', 'transform 0.5s ease-in-out');
-				clearTimeout(transitionTimeoutId); // Clear any previous timeout
-				transitionTimeoutId = setTimeout(function() {
-				  toggleTransition(false);
-				}, 500); // The duration of the transition in milliseconds
-
-				// Set the redraw interval during the ribbon transition
-				redrawIntervalId = setInterval(redrawYoutubeContainer, 16); // Approximately 60 FPS
-			  } else {
-				$('.ribbon').css('transition', 'none');
-				clearInterval(redrawIntervalId); // Clear the redraw interval
-			  }
-			}
-
-			function redrawYoutubeContainer() {
-			  $(".video-container").css("opacity", function (index, currentOpacity) {
-				return currentOpacity == 1 ? 0.999 : 1;
-			  });
-			}
-
-		   // YouTube video handling
-			var youtubeVideoIds = [
-			  "yJgtnvi-TZs", // Express Software slot client
-			  "aiFt6kaaomU", // Star Cluck
-			  "aBHRRuYBLr8", // Fury Mallard
-			  "-esJuFV-jWU", // Best Casino Legends Slots 777
-			  "zFnPBs_eQy0", // VMAX
-			];
-			var players = [];
-			
-			var videoNameMap = {
-			    "expressslots": 0,
-				"starcluck": 1,
-				"furymallard": 2,
-				"bestcasino": 3,
-				"vmax": 4,
-			  };
-
-			function onYouTubeIframeAPIReady() {
-				//console.log("onYouTubeIframeAPIReady()");
-				youtubeVideoIds.forEach(function (videoId, index) {
-				  var name = Object.keys(videoNameMap).find(key => videoNameMap[key] === index);
-				  players[index] = new YT.Player("youtube-" + name, {
-					videoId: videoId,
-				  });
-				});
-			  }
-
-			function pauseVideos() {
-			  players.forEach(function (player) {
-				//console.log("pauseVideos()");
-				if (player && player.pauseVideo && typeof player.pauseVideo === 'function') {
-				  player.pauseVideo();
-				}
-			  });
-			}
-
-			window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
-		});
-  </script>
-  <script src="https://www.youtube.com/iframe_api">
-  </script>
- </head>
- <body>
-  <div class="top-blank">
-  </div>
   <div class="content-wrapper">
-   <div class="main">
-    <div class="arrow left-arrow">
-     ←
-     <div class="arrow-overlay">
-     </div>
-    </div>
-    <div class="arrow right-arrow">
-     →
-     <div class="arrow-overlay">
-     </div>
-    </div>
-    <div class="ribbon-wrapper">
-     <div class="ribbon">
-      <div>
-       <!-- Page 1 content -->
-       <div class="page-content">
-        <h1>
-         Lead Client / Foundations Engineer (Unity, C#/.NET, C++)
-        </h1>
-        <div class="intro-text-wrapper">
-         <div class="intro-text">
-          <p>
-           Hello, my name is
-           <span class="highlight">
-            Vincent J. Liguori.
-           </span>
-            I build client foundations: scalable Unity architecture, tooling, UI systems, and performance work that helps teams ship and keep shipping. I’ve owned end-to-end frameworks (Windows + WebGL/mobile browsers), built content pipelines (Addressables + cloud hosting), and developed real-time simulation tooling in C++/DirectX.
-          </p>
-          <p>
-           I’m most useful when the problem is “hard and cross-cutting”: memory/GC stability, asset lifetime, load/unload correctness, UI scalability, and the engineering standards that keep a codebase healthy as content grows.
-          </p>
-          <div class="summary">
-           <div class="summary-columns">
-            <div class="summary-section">
-             <h4> Game Architecture and Design Patterns: </h4>
-             <ul> 
-			  <li> Modular and reusable architecture </li>
-              <li> Dynamic game generation </li>
-              <li> State management using events </li>
-              <li> Implementation of robust systems for scalability </li>
-			  <li> Experience in using Scriptable Objects for efficient data management </li>
-             </ul>
-            </div>
-			<div class="summary-section">
-             <h4> User Interface (UI) Development: </h4>
-             <ul>
-              <li> Experience with Unity's legacy Canvas system </li>
-              <li> Experience with Unity's new UI Toolkit </li>
-              <li> Dynamic UI generation and customization </li>
-              <li> Responsive design for different screen sizes </li>
-             </ul>
-            </div>
-            <div class="summary-section">
-             <h4> Asset Management: </h4>
-             <ul>
-              <li> Utilization of Unity's Addressables system </li>
-              <li> Dynamic loading and unloading of assets </li>
-             </ul>
-            </div>
-            <div class="summary-section">
-             <h4> Animation and Visual Effects: </h4>
-             <ul>
-              <li> Integration of Spine animations </li>
-              <li> 2D animation walk cycles </li>
-              <li> Immersive visual effects and transitions </li>
-             </ul>
-            </div>
-            <div class="summary-section">
-             <h4> Localization and Serialization: </h4>
-             <ul>
-              <li> Implementation of Localization API for string and sprite localization </li>
-              <li> Serialization and deserialization of JSON data </li>
-             </ul>
-            </div>
-            <div class="summary-section">
-             <h4> Audio Management: </h4>
-             <ul>
-              <li> Utilization of Unity's audio mixer system </li>
-              <li> Managing game music and sounds with separate audio streams </li>
-             </ul>
-            </div>
-           </div>
-          </div>
-         </div>
-        </div>
-        <div class="social-icons">
-         <a class="icon-linkedin" href="https://www.linkedin.com/in/vincent-liguori-77329724/" target="_blank" title="linkedin">
-          <i class="fab fa-linkedin">
-          </i>
-         </a>
-         <a class="icon-github" href="https://github.com/cathode26" target="_blank" title="github">
-          <i class="fab fa-github">
-          </i>
-         </a>
-         <a class="icon-email" href="mailto:vincent.j.liguori@outlook.com" title="email">
-          <i class="fas fa-envelope">
-          </i>
-         </a>
-         <a class="icon-file" href="V-Liguori-resume-26FEB26.pdf" title="resume">
-          <i class="fas fa-file">
-          </i>
-         </a>
-        </div>
-       </div>
+    <div class="main">
+      <div class="arrow left-arrow">
+        ←
+        <div class="arrow-overlay"></div>
       </div>
-	  <!-- Page 2 content -->
-	  <div>
-        <div class="page-content">
-          <div class="video-container">
-            <iframe
-              allow="autoplay; encrypted-media"
-              allowfullscreen
-              frameborder="0"
-              height="468"
-              id="youtube-expressslots"
-              src="https://www.youtube.com/embed/yJgtnvi-TZs?enablejsapi=1"
-              width="832">
-            </iframe>
-      
-            <div class="text-wrapper">
-              <h1>Express Software — Slot Client Foundations & Tooling</h1>
-              <p>
-                At Express Software, I own and evolve the Unity slot client foundation used across multiple games. My work spans
-                client architecture, content pipelines, and internal tools that help the team build and ship games faster.
-                I build reusable systems for UI, loading, and configuration; create workflows that reduce manual setup; and
-                focus heavily on performance/memory stability for real-world deployment constraints.
-              </p>
-              <p>
-                Highlights include scalable Unity architecture, tooling and automation for game setup/iteration, asset lifecycle
-                and loading patterns (e.g., Addressables-style workflows), and a focus on keeping production code maintainable as
-                content grows.
-              </p>
-            </div>
-          </div>
-        </div>
+
+      <div class="arrow right-arrow">
+        →
+        <div class="arrow-overlay"></div>
       </div>
-	  <!-- Page 3 content -->
-      <div>
-       <div class="page-content">
-        <div class="video-container">
-         <iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" height="468" id="youtube-bestcasino" src="https://www.youtube.com/embed/-esJuFV-jWU?enablejsapi=1" width="832">
-         </iframe>
-         <div class="text-wrapper">
-          <h1>
-           Best Casino Legends Slot 777
-          </h1>
-          <p>
-			I led client foundations work on a Unity F2P slot framework used to ship Best Casino Legends Slot 777. My work focused on scalability and live iteration: Addressables + cloud-hosted bundles (AWS S3) for on-demand loading, internal packages/tools to standardize setup, and a front-end customization API to configure game variants from a shared foundation. I also implemented localization (strings + sprites), JSON state serialization/deserialization, and audio mixer routing for separate music/SFX streams.
-          </p>
-         </div>
-        </div>
-       </div>
-      </div>
-      <!-- Page 4 content -->
-      <div>
-       <div class="page-content">
-        <div class="video-container">
-         <iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" height="468" id="youtube-vmax" src="https://www.youtube.com/embed/zFnPBs_eQy0?enablejsapi=1" width="832">
-         </iframe>
-         <div class="text-wrapper">
-          <h1>
-           VMAX Simulator
-          </h1>
-          <p>
-			At Forum Energy Technologies, we built a simulation tool for training ROV pilots and validating offshore equipment. I worked on the 3D engine and built tools that automated CAD cleanup by removing hidden/small geometry, reducing manual export/cleanup time.          
-		  </p>
-         </div>
-        </div>
-       </div>
-      </div>
-	  <!-- Page 5 content -->
-      <div>
-       <div class="page-content" data-webgl-id="SpaceInvaders" style="height: 100%;">
-        <div class="webgl-container">
-         <div class="webgl-wrapper">
-          <div class="centered webgl-content-root">           
-		  <!-- Add the Unity WebGL player container here -->
-           <div class="webgl-content">
-			  <canvas id="unityContainerSpaceInvaders" style="width: 832px; height: 468px;"></canvas>
-              <div class="footer">
-                <div class="webgl-logo"> </div>
-                <div class="fullscreen" onclick="UNITY_GAMES.SpaceInvaders.instance.SetFullscreen(1)"> </div>
-                <div class="title"> Space Invaders </div>
+
+      <div class="ribbon-wrapper">
+        <div class="ribbon">
+          <div>
+            <div class="page-content">
+              <h1>Lead Client / Foundations Engineer (Unity, C#/.NET, C++)</h1>
+              <div class="intro-text-wrapper">
+                <div class="intro-text">
+                  <p>
+                    Hello, my name is
+                    <span class="highlight">Vincent J. Liguori.</span>
+                    I build client foundations: scalable Unity architecture, tooling, UI systems, and performance work that helps teams ship and keep shipping. I’ve owned end-to-end frameworks (Windows + WebGL/mobile browsers), built content pipelines (Addressables + cloud hosting), and developed real-time simulation tooling in C++/DirectX.
+                  </p>
+
+                  <p>
+                    I’m most useful when the problem is “hard and cross-cutting”: memory/GC stability, asset lifetime, load/unload correctness, UI scalability, and the engineering standards that keep a codebase healthy as content grows.
+                  </p>
+
+                  <div class="summary">
+                    <div class="summary-columns">
+                      <div class="summary-section">
+                        <h4>Game Architecture and Design Patterns:</h4>
+                        <ul>
+                          <li>Modular and reusable architecture</li>
+                          <li>Dynamic game generation</li>
+                          <li>State management using events</li>
+                          <li>Implementation of robust systems for scalability</li>
+                          <li>Experience in using Scriptable Objects for efficient data management</li>
+                        </ul>
+                      </div>
+
+                      <div class="summary-section">
+                        <h4>User Interface (UI) Development:</h4>
+                        <ul>
+                          <li>Experience with Unity's legacy Canvas system</li>
+                          <li>Experience with Unity's new UI Toolkit</li>
+                          <li>Dynamic UI generation and customization</li>
+                          <li>Responsive design for different screen sizes</li>
+                        </ul>
+                      </div>
+
+                      <div class="summary-section">
+                        <h4>Asset Management:</h4>
+                        <ul>
+                          <li>Utilization of Unity's Addressables system</li>
+                          <li>Dynamic loading and unloading of assets</li>
+                        </ul>
+                      </div>
+
+                      <div class="summary-section">
+                        <h4>Animation and Visual Effects:</h4>
+                        <ul>
+                          <li>Integration of Spine animations</li>
+                          <li>2D animation walk cycles</li>
+                          <li>Immersive visual effects and transitions</li>
+                        </ul>
+                      </div>
+
+                      <div class="summary-section">
+                        <h4>Localization and Serialization:</h4>
+                        <ul>
+                          <li>Implementation of Localization API for string and sprite localization</li>
+                          <li>Serialization and deserialization of JSON data</li>
+                        </ul>
+                      </div>
+
+                      <div class="summary-section">
+                        <h4>Audio Management:</h4>
+                        <ul>
+                          <li>Utilization of Unity's audio mixer system</li>
+                          <li>Managing game music and sounds with separate audio streams</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="social-icons">
+                <a class="icon-linkedin" href="https://www.linkedin.com/in/vincent-liguori-77329724/" target="_blank" title="linkedin">
+                  <i class="fab fa-linkedin"></i>
+                </a>
+                <a class="icon-github" href="https://github.com/cathode26" target="_blank" title="github">
+                  <i class="fab fa-github"></i>
+                </a>
+                <a class="icon-email" href="mailto:vincent.j.liguori@outlook.com" title="email">
+                  <i class="fas fa-envelope"></i>
+                </a>
+                <a class="icon-file" href="V-Liguori-resume-26FEB26.pdf" title="resume">
+                  <i class="fas fa-file"></i>
+                </a>
               </div>
             </div>
-           </div>
-		  </div>
-          <!-- End of Unity WebGL player container -->
-          <div class="webgl-container-text page4-text">
-           <h1>
-				Space Invaders
-			</h1>
-			<p>
-				A small WebGL project focused on clean gameplay architecture and responsive input. Includes a playable build on this site and a public codebase for review. Controls: arrows + spacebar.			</p>
-			<p>
-				If you're curious about the behind-the-scenes magic or wish to explore the codebase, please check out the game's <a href="https://github.com/cathode26/SpaceInvaders" target="_blank">GitHub repository</a>.
-			</p>
+          </div>
 
-          </div>
-		 </div>
-        </div>
-       </div>
-      <!-- Page 6 content -->
-      <div>
-       <div class="page-content" data-webgl-id="MyLittlePony" style="height: 100%;">
-        <div class="webgl-container">
-         <div class="webgl-wrapper">
-          <div class="centered webgl-content-root">
-           <!-- Add the Unity WebGL player container here -->
-           <div class="webgl-content">
-            <canvas id="unityContainerMyLittlePony" style="width: 832px; height: 468px"></canvas>
-            <div class="footer">
-             <div class="webgl-logo"> </div>
-             <div class="fullscreen" onclick="UNITY_GAMES.MyLittlePony.instance.SetFullscreen(1)"> </div>
-             <div class="title"> My Little Pony </div>
+          <div>
+            <div class="page-content">
+              <div class="video-container">
+                <iframe
+                  loading="lazy"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen
+                  frameborder="0"
+                  height="468"
+                  id="youtube-expressslots"
+                  data-video-id="yJgtnvi-TZs"
+                  width="832"></iframe>
+
+                <div class="text-wrapper">
+                  <h1>Express Software — Slot Client Foundations & Tooling</h1>
+                  <p>
+                    At Express Software, I own and evolve the Unity slot client foundation used across multiple games. My work spans client architecture, content pipelines, and internal tools that help the team build and ship games faster. I build reusable systems for UI, loading, and configuration; create workflows that reduce manual setup; and focus heavily on performance/memory stability for real-world deployment constraints.
+                  </p>
+                  <p>
+                    Highlights include scalable Unity architecture, tooling and automation for game setup/iteration, asset lifecycle and loading patterns (e.g., Addressables-style workflows), and a focus on keeping production code maintainable as content grows.
+                  </p>
+                </div>
+              </div>
             </div>
-           </div>
           </div>
-         </div>
-         <!-- End of Unity WebGL player container -->
-         <div class="webgl-container-text page4-text">
-          <h1>
-           MLP Pony Up
-          </h1>
-          <p>
-			  Solo-programmed demo for an idle/clicker-style game. Implemented input, audio, parallax background, and the animation/controller logic.          
-		  </p>
-         </div>
+
+          <div>
+            <div class="page-content">
+              <div class="video-container">
+                <iframe
+                  loading="lazy"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen
+                  frameborder="0"
+                  height="468"
+                  id="youtube-bestcasino"
+                  data-video-id="-esJuFV-jWU"
+                  width="832"></iframe>
+
+                <div class="text-wrapper">
+                  <h1>Best Casino Legends Slot 777</h1>
+                  <p>
+                    I led client foundations work on a Unity F2P slot framework used to ship Best Casino Legends Slot 777. My work focused on scalability and live iteration: Addressables + cloud-hosted bundles (AWS S3) for on-demand loading, internal packages/tools to standardize setup, and a front-end customization API to configure game variants from a shared foundation. I also implemented localization (strings + sprites), JSON state serialization/deserialization, and audio mixer routing for separate music/SFX streams.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="page-content">
+              <div class="video-container">
+                <iframe
+                  loading="lazy"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen
+                  frameborder="0"
+                  height="468"
+                  id="youtube-vmax"
+                  data-video-id="zFnPBs_eQy0"
+                  width="832"></iframe>
+
+                <div class="text-wrapper">
+                  <h1>VMAX Simulator</h1>
+                  <p>
+                    At Forum Energy Technologies, we built a simulation tool for training ROV pilots and validating offshore equipment. I worked on the 3D engine and built tools that automated CAD cleanup by removing hidden/small geometry, reducing manual export/cleanup time.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="page-content" data-webgl-id="SpaceInvaders" style="height: 100%;">
+              <div class="webgl-container">
+                <div class="webgl-wrapper">
+                  <div class="centered webgl-content-root">
+                    <div class="webgl-content">
+                      <canvas id="unityContainerSpaceInvaders" style="width: 832px; height: 468px;"></canvas>
+                      <div class="footer">
+                        <div class="webgl-logo"></div>
+                        <div class="fullscreen" onclick="UNITY_GAMES.SpaceInvaders.instance.SetFullscreen(1)"></div>
+                        <div class="title">Space Invaders</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="webgl-container-text page4-text">
+                  <h1>Space Invaders</h1>
+                  <p>
+                    A small WebGL project focused on clean gameplay architecture and responsive input. Includes a playable build on this site and a public codebase for review. Controls: arrows + spacebar.
+                  </p>
+                  <p>
+                    If you're curious about the behind-the-scenes magic or wish to explore the codebase, please check out the game's
+                    <a href="https://github.com/cathode26/SpaceInvaders" target="_blank">GitHub repository</a>.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="page-content" data-webgl-id="MyLittlePony" style="height: 100%;">
+              <div class="webgl-container">
+                <div class="webgl-wrapper">
+                  <div class="centered webgl-content-root">
+                    <div class="webgl-content">
+                      <canvas id="unityContainerMyLittlePony" style="width: 832px; height: 468px"></canvas>
+                      <div class="footer">
+                        <div class="webgl-logo"></div>
+                        <div class="fullscreen" onclick="UNITY_GAMES.MyLittlePony.instance.SetFullscreen(1)"></div>
+                        <div class="title">My Little Pony</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="webgl-container-text page4-text">
+                  <h1>MLP Pony Up</h1>
+                  <p>
+                    Solo-programmed demo for an idle/clicker-style game. Implemented input, audio, parallax background, and the animation/controller logic.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="page-content">
+              <div class="video-container">
+                <iframe
+                  loading="lazy"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen
+                  frameborder="0"
+                  height="468"
+                  id="youtube-starcluck"
+                  data-video-id="aiFt6kaaomU"
+                  width="832"></iframe>
+
+                <div class="text-wrapper">
+                  <h1>Star Cluck.</h1>
+                  <p>
+                    During my graduate studies in 2009, I worked on a project named 'Star Cluck,' a 3D rail shooter game inspired by Star Fox. The game was developed using C++, DirectX 9, Visual Studio, and the Simple Academic Game Engine (SAGE). As part of the project, I made several contributions that helped enhance the overall gameplay experience such as level scripting, infinite terrain with terrain wrapping, spatial partitioning, triggers, and collision detection with oriented bounding boxes. To ensure that the player's plane stayed within the game boundaries, I implemented a flight path that relied on collision with spatial partitions. Finally, I created a camera tether with tolerance to provide a smooth and responsive player experience. Overall, my contributions to the Star Cluck project helped to create an enjoyable and engaging gaming experience for players.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="page-content">
+              <div class="video-container">
+                <iframe
+                  loading="lazy"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen
+                  frameborder="0"
+                  height="468"
+                  id="youtube-furymallard"
+                  data-video-id="aBHRRuYBLr8"
+                  width="832"></iframe>
+
+                <div class="text-wrapper">
+                  <h1>Fury Mallard.</h1>
+                  <p>
+                    During my undergraduate studies in 2008, I worked on a game demo called 'Fury Mallard', a third-person shooter game. The game was developed using C++, DirectX 9, Visual Studio, and the Simple Academic Game Engine (SAGE). My primary responsibilities included crafting the artificial intelligence for the characters and aircraft, a feature that significantly contributed to the immersive and dynamic nature of the game.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-       </div>
       </div>
-       <!-- Page 7 content -->
-	   <div>
-       <div class="page-content">
-        <div class="video-container">
-         <iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" height="468" id="youtube-starcluck" src="https://www.youtube.com/embed/aiFt6kaaomU?enablejsapi=1" width="832">
-         </iframe>
-         <div class="text-wrapper">
-          <h1>
-           Star Cluck.
-          </h1>
-          <p>
-           During my graduate studies in 2009, I worked on a project named 'Star Cluck,', a 3D rail shooter game inspired by Star Fox. The game was developed using C++, DirectX 9, Visual Studio, and the Simple Academic Game Engine (SAGE). As part of the project, I made several contributions that helped enhance the overall gameplay experience such as level scripting, infinite terrain with terrain wrapping, spatial partitioning, triggers, and collision detection with oriented bounding boxes. To ensure that the player's plane stayed within the game boundaries, I implemented a flight path that relied on collision with spatial partitions. Finally, I created a camera tether with tolerance to provide a smooth and responsive player experience. Overall, my contributions to the Star Cluck project helped to create an enjoyable and engaging gaming experience for players.
-          </p>
-         </div>
+
+      <div class="bottom-image-slider">
+        <div class="image-slider">
+          <img src="Images/image1b.svg"/>
+          <img src="Images/oasisgolda.png"/>
+          <img src="Images/legends777a.png"/>
+          <img src="Images/vmaxa.png"/>
+          <img src="Images/image7a.png"/>
+          <img src="Images/mlpa.png"/>
+          <img src="Images/image5a.png"/>
+          <img src="Images/furymallarda.png"/>
         </div>
-       </div>
       </div>
-       <!-- Page 8 content -->
-	   <div>
-       <div class="page-content">
-        <div class="video-container">
-         <iframe allow="autoplay; encrypted-media" allowfullscreen="" frameborder="0" height="468" id="youtube-furymallard" src="https://www.youtube.com/embed/aBHRRuYBLr8?enablejsapi=1" width="832">
-         </iframe>
-         <div class="text-wrapper">
-          <h1>
-           Fury Mallard.
-          </h1>
-          <p>
-           During my undergraduate studies in 2008, I worked on a game demo called 'Fury Mallard', a third-person shooter game. The game was developed using C++, DirectX 9, Visual Studio, and the Simple Academic Game Engine (SAGE). My primary responsibilities included crafting the artificial intelligence for the characters and aircraft, a feature that significantly contributed to the immersive and dynamic nature of the game.
-          </p>
-         </div>
-        </div>
-       </div>
-      </div>
-     </div>
     </div>
-    <div class="bottom-image-slider">
-     <div class="image-slider">
-      <img src= "Images/image1b.svg"/>
-      <img src= "Images/oasisgolda.png"/>
-      <img src= "Images/legends777a.png"/>
-      <img src= "Images/vmaxa.png"/>
-      <img src= "Images/image7a.png"/>
-      <img src= "Images/mlpa.png"/>
-      <img src= "Images/image5a.png"/>
-      <img src= "Images/furymallarda.png"/>
-      <!-- Add all your image sources here -->
-     </div>
-    </div>
-   </div>
   </div>
-  <div class="footer">
-   <!-- Add your footer content here -->
-  </div>
- </body>
+
+  <div class="footer"></div>
+</body>
 </html>
