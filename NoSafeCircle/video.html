@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>No Safe Circle - AI Development Pipeline Video</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0f1116;
+      --panel: #171b22;
+      --text: #eef2f7;
+      --muted: #aeb7c4;
+      --accent: #6fb1ff;
+      --border: #2a3442;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #0b0d12, #111722);
+      color: var(--text);
+    }
+    .wrap {
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+      padding: 48px 0 64px;
+    }
+    .eyebrow {
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: .82rem;
+    }
+    h1 {
+      margin: .35rem 0 .6rem;
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      line-height: 1.05;
+    }
+    .subtitle {
+      color: var(--muted);
+      max-width: 850px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .video {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 18px 55px rgba(0,0,0,.35);
+      border: 1px solid var(--border);
+    }
+    .video iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: var(--panel);
+      font-weight: 700;
+    }
+    .btn.primary {
+      background: var(--accent);
+      color: #08111d;
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="eyebrow">No Safe Circle / Assignment 10</div>
+    <h1>AI Development Pipeline Video</h1>
+    <p class="subtitle">
+      Video evidence for the No Safe Circle AI-assisted Unity development pipeline.
+    </p>
+
+    <div class="video">
+      <iframe
+        src="https://www.youtube.com/embed/yJgtnvi-TZs?rel=0&modestbranding=1"
+        title="No Safe Circle AI Development Pipeline Video"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen></iframe>
+    </div>
+
+    <div class="links">
+      <a class="btn primary" href="https://cathode26.github.io/NoSafeCircle/">Play No Safe Circle</a>
+      <a class="btn" href="https://cathode26.github.io/NoSafeCircle/Assignment10.pdf">Project PDF</a>
+      <a class="btn" href="https://github.com/cathode26/NoSafeCircle">GitHub Repository</a>
+      <a class="btn" href="https://cathode26.github.io/">Portfolio</a>
+    </div>
+  </main>
+</body>
+</html>
