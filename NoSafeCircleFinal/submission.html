@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>No Safe Circle - Final Project Submission</title>
+  <style>
+    @page { margin: 18mm 16mm; }
+
+    :root {
+      --ink: #14181f;
+      --muted: #55606e;
+      --rule: #c9d1db;
+      --accent: #6b3fa0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px;
+      max-width: 820px;
+      margin-inline: auto;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 11.5pt;
+      line-height: 1.5;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    h1 {
+      font-size: 26pt;
+      margin: 0 0 2px;
+      letter-spacing: -0.4px;
+    }
+
+    .eyebrow {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 9pt;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .tagline {
+      font-style: italic;
+      color: var(--muted);
+      margin: 0 0 22px;
+    }
+
+    h2 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12pt;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin: 26px 0 8px;
+      padding-bottom: 5px;
+      border-bottom: 1.5px solid var(--rule);
+      page-break-after: avoid;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0 4px;
+      page-break-inside: avoid;
+    }
+
+    td {
+      padding: 5px 10px 5px 0;
+      vertical-align: top;
+      border-bottom: 1px solid #e8edf3;
+    }
+
+    td:first-child {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10pt;
+      font-weight: 700;
+      white-space: nowrap;
+      width: 168px;
+    }
+
+    a { color: var(--accent); }
+
+    .links td:first-child { color: var(--muted); font-weight: 400; }
+
+    ul { margin: 6px 0; padding-left: 20px; }
+    li { margin-bottom: 4px; }
+
+    .note {
+      font-size: 10pt;
+      color: var(--muted);
+      border-left: 3px solid var(--rule);
+      padding: 2px 0 2px 12px;
+      margin: 14px 0;
+    }
+
+    @media print {
+      body { padding: 0; }
+      a { color: var(--ink); text-decoration: none; }
+      .screen-only { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="eyebrow">Multi-Agent AI for Game Development &middot; Final Project</div>
+  <h1>No Safe Circle</h1>
+  <p class="tagline">A tiny wizard is lost in a dungeon. Something is down there with you, and five doors stand between you and the way out.</p>
+
+  <h2>Submission Links</h2>
+  <table class="links">
+    <tr><td>Playable build</td><td><a href="https://cathode26.github.io/NoSafeCircleFinal/">cathode26.github.io/NoSafeCircleFinal/</a></td></tr>
+    <tr><td>Gameplay video</td><td><a href="https://cathode26.github.io/NoSafeCircleFinal/video.html">cathode26.github.io/NoSafeCircleFinal/video.html</a></td></tr>
+    <tr><td>README</td><td><a href="https://cathode26.github.io/NoSafeCircleFinal/README.md">cathode26.github.io/NoSafeCircleFinal/README.md</a></td></tr>
+    <tr><td>Source repository</td><td><a href="https://github.com/cathode26/NoSafeCircle">github.com/cathode26/NoSafeCircle</a></td></tr>
+  </table>
+  <p class="note">Runs in the browser. No install required. Built with Unity 6000.1 for WebGL.</p>
+
+  <h2>How to Play</h2>
+  <table>
+    <tr><td>Left-click the floor</td><td>Walk there</td></tr>
+    <tr><td>Left-click a door</td><td>Walk to it and open it</td></tr>
+    <tr><td>Right-click</td><td>Cast a fireball toward the cursor</td></tr>
+    <tr><td>R</td><td>Play again, after you win or die</td></tr>
+  </table>
+
+  <h2>The Run</h2>
+  <p>
+    Doors open on a timer. Click one and your wizard walks over and works on it; it swings
+    open, and once you step through it slams and locks behind you. There is no going back.
+  </p>
+  <p>
+    Enemies hunt you. Let one reach you and it hits you, repeatedly &mdash; your health is shown
+    in the top-left. A fireball is cheaper than a fight, and you have no melee attack. A door
+    between you and something chasing you is an escape, not just progress.
+  </p>
+  <p>
+    <strong>You escape</strong> by crossing the final door. <strong>You die</strong> when your
+    health reaches zero. Either way, press <strong>R</strong> to start over.
+  </p>
+
+  <h2>How It Was Built</h2>
+  <p>
+    The game was produced through a multi-agent AI development pipeline rather than by hand.
+    The pipeline treats the project as a validated task graph and routes work across providers:
+  </p>
+  <ul>
+    <li><strong>Task graph as the source of truth.</strong> Ninety-three task contracts with
+        parent and dependency edges, exclusive file-ownership claims, and resource groups, all
+        checked by a validator that enforces an acyclic graph and single ownership per file.</li>
+    <li><strong>Contract review across two providers.</strong> A generate&ndash;evaluate&ndash;refine
+        cycle in which one model authors a contract revision, an independent model audits it,
+        the author refines, and a fresh auditor re-checks before anything is committed.</li>
+    <li><strong>Decomposition with an independent reviewer.</strong> Oversized tasks are split by
+        one provider and reviewed by another; a proposal is review-only until a human approves
+        the exact plan.</li>
+    <li><strong>Execution and test gates.</strong> Implementation work runs in containerized
+        provider sessions against Unity Edit Mode and Play Mode test suites, with a
+        non-mutation rule: a passing suite that leaves the repository dirty is a failed run.</li>
+    <li><strong>Human approval at the boundaries.</strong> Visual quality, design decisions, and
+        anything that changes the graph remain human-gated.</li>
+  </ul>
+
+  <h2>Scope and Honesty</h2>
+  <p>
+    The submitted build is a vertical slice: five connected rooms, a door sequence with a real
+    locking rule, an enemy that pursues, a cursor-aimed fireball, and explicit win and loss
+    states. Character and enemy art in this build are placeholder silhouettes; generated
+    pixel-art sets exist in the repository but are not wired into this build.
+  </p>
+
+</body>
+</html>
