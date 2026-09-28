@@ -6,6 +6,7 @@
     <title>Unity Web Player | NoSafeCircle</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="TemplateData/memory-profiler.js"></script>
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -134,6 +135,7 @@
             loadingContainer.style.display = "none";
           }
         }).then((unityInstance) => {
+                unityMemoryProfiler.attach(unityInstance);
                 document.querySelector("#unity-fullscreen-button").onclick = () => {
                   unityInstance.SetFullscreen(1);
                 };
